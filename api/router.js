@@ -5,7 +5,6 @@ const catalogData = [
     type: "movie",
     name: "F1 (Le Film)",
     poster: "https://fr.web.img3.acsta.net/r_1920_1080/img/b1/78/b178318cb7be01b706863ca6c40a5d89.jpg",
-    background: "https://cdn.passion-horlogere.com/wp-content/uploads/2025/06/film-f1-passion-horlogere14.jpg",
     description: "Sonny Hayes était le prodige de la F1 des années 90 jusqu’à son terrible accident. Trente ans plus tard, devenu un pilote indépendant, il est contacté par Ruben Cervantes, patron d’une écurie en faillite qui le convainc de revenir pour sauver l’équipe et prouver qu’il est toujours le meilleur. Aux côtés de Joshua Pearce, diamant brut prêt à devenir le numéro 1, Sonny réalise vite qu'en F1, son coéquipier est aussi son plus grand rival, que le danger est partout et qu'il risque de tout perdre.",
     stream: "https://pulse.topstrime.online/movie/911430/xjycgu/master.m3u8"
   },
