@@ -12,7 +12,7 @@ const catalogData = [
   },
 
    {
-    id: "tt33613785",
+    id: "directhls_tt33613785",
     type: "movie",
     name: "God Save the Tuche (2025)",
     poster: "https://i.ibb.co/5W0shJsc/movie-1137759-posters-1.jpg",
