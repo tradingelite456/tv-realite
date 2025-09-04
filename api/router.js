@@ -46,7 +46,7 @@ const catalogData = [
 
   // === SÉRIES ===
  {
-   "meta": {
+   
     id: "series_squid",
     type: "series",
     name: "Squid Game",
@@ -62,7 +62,7 @@ const catalogData = [
       { season: 1, episode: 3, title: "The Man with the Umbrella", released: "2021-09-17", url: "https://pulse.topstrime.online/tv/93405/abc123/S1/E3/master.m3u8" },
       { season: 2, episode: 1, title: "Bread and Lottery", released: "2024-12-26", url: "https://pulse.topstrime.online/tv/93405/r6pkqv/S2/E1/master.m3u8" },
       { season: 2, episode: 2, title: "Halloween Party", released: "2024-12-26", url: "https://pulse.topstrime.online/tv/93405/def456/S2/E2/master.m3u8" }
-     }
+     
     ]
   },
   
