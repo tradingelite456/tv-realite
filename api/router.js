@@ -129,29 +129,31 @@ module.exports = (req, res) => {
   }
 
   // === CATALOG ===
-if (type === "series" && catalogId === "direct_hls") {
-  metas = catalogData
-    .filter(x => x.type === "series")
-    .map(item => ({
-      id: item.id,
-      type: "series",
-      name: item.name,
-      poster: item.poster,
-      background: item.background || item.poster,
-      description: item.description,
-      genres: item.genres || [],
-      releaseInfo: item.releaseInfo || "",
-      imdbRating: item.imdbRating || 0,
-      videos: item.videos.map(ep => ({
-        id: `${item.id}:${ep.season}:${ep.episode}`,
-        season: ep.season,
-        episode: ep.episode,
-        title: ep.title,
-        released: ep.released
-      }))
-    }));
-}
+  if (resource === "catalog") {
+    const type = parts[1];
+    const catalogId = stripJson(parts[2] || "");
 
+    let metas = catalogData
+      .filter(x => x.type === type)
+      .map(item => {
+        const base = {
+          id: item.id,
+          type: item.type,
+          name: item.name,
+          poster: item.poster,
+          description: item.description,
+          background: item.background || item.poster
+        };
+        if (item.type === "series") {
+          base.genres = item.genres || [];
+          base.releaseInfo = item.releaseInfo || "";
+          base.imdbRating = item.imdbRating || 0;
+        }
+        return base;
+      });
+
+    return sendJSON(res, { metas });
+  }
 
   // === META ===
   if (resource === "meta") {
