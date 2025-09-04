@@ -6,7 +6,7 @@ const catalogData = [
     type: "movie",
     name: "F1 (Le Film)",
     poster: "https://fr.web.img3.acsta.net/r_1920_1080/img/b1/78/b178318cb7be01b706863ca6c40a5d89.jpg",
-    description: "Sonny Hayes était le prodige de la F1 des années 90 jusqu’à son terrible accident. Trente ans plus tard, devenu un pilote indépendant, il est contacté par Ruben Cervantes, patron d’une écurie en faillite qui le convainc de revenir pour sauver l’équipe et prouver qu’il est toujours le meilleur. Aux côtés de Joshua Pearce, diamant brut prêt à devenir le numéro 1, Sonny réalise vite qu'en F1, son coéquipier est aussi son plus grand rival, que le danger est partout et qu'il risque de tout perdre.",
+    description: "Sonny Hayes était le prodige de la F1 des années 90 jusqu'à son terrible accident. Trente ans plus tard, devenu un pilote indépendant, il est contacté par Ruben Cervantes, patron d'une écurie en faillite qui le convainc de revenir pour sauver l'équipe et prouver qu'il est toujours le meilleur. Aux côtés de Joshua Pearce, diamant brut prêt à devenir le numéro 1, Sonny réalise vite qu'en F1, son coéquipier est aussi son plus grand rival, que le danger est partout et qu'il risque de tout perdre.",
     stream: "https://pulse.topstrime.online/movie/911430/xjycgu/master.m3u8"
   },
 
@@ -23,7 +23,7 @@ const catalogData = [
     type: "movie",
     name: "Y a-t-il un flic pour sauver le monde ?",
     poster: "https://fr.web.img6.acsta.net/c_310_420/img/fb/58/fb582203041242b6b13cf2a05660ffb6.jpg",
-    description: "Un seul homme possède des compétences… disons uniques… pour diriger la prestigieuse Brigade Spéciale et… sauver le monde, tout simplement ! Cet homme, c’est le lieutenant Frank Drebin Jr. — oui, vous avez bien lu — qui suit les traces de son illustre père, l'inspecteur Frank Drebin, qui s’était déjà illustré par le passé pour sauver la Reine, le Président et Hollywood !",
+    description: "Un seul homme possède des compétences… disons uniques… pour diriger la prestigieuse Brigade Spéciale et… sauver le monde, tout simplement ! Cet homme, c'est le lieutenant Frank Drebin Jr. — oui, vous avez bien lu — qui suit les traces de son illustre père, l'inspecteur Frank Drebin, qui s'était déjà illustré par le passé pour sauver la Reine, le Président et Hollywood !",
     stream: "https://pulse.topstrime.online/movie/1035259/bf8xpe/master.m3u8"
   },
 
@@ -40,7 +40,7 @@ const catalogData = [
     type: "movie",
     name: "On ira",
     poster: "https://fr.web.img5.acsta.net/r_1920_1080/img/4e/64/4e644edc4b90cae39ea31727a29cdb09.jpg",
-    description: "Marie, 80 ans, en a ras le bol de sa maladie. Elle a un plan : partir en Suisse pour mettre fin à ses jours. Mais au moment de l’annoncer à Bruno, son fils irresponsable, et Anna sa petite-fille en crise d’ado, elle panique et invente un énorme mensonge. Prétextant un mystérieux héritage à aller chercher dans une banque suisse, elle leur propose de faire un voyage tous ensemble. Complice involontaire de cette mascarade, Rudy, un aide-soignant tout juste rencontré la veille, va prendre le volant du vieux camping car familial, et conduire cette famille dans un voyage inattendu.",
+    description: "Marie, 80 ans, en a ras le bol de sa maladie. Elle a un plan : partir en Suisse pour mettre fin à ses jours. Mais au moment de l'annoncer à Bruno, son fils irresponsable, et Anna sa petite-fille en crise d'ado, elle panique et invente un énorme mensonge. Prétextant un mystérieux héritage à aller chercher dans une banque suisse, elle leur propose de faire un voyage tous ensemble. Complice involontaire de cette mascarade, Rudy, un aide-soignant tout juste rencontré la veille, va prendre le volant du vieux camping car familial, et conduire cette famille dans un voyage inattendu.",
     stream: "https://pulse.topstrime.online/movie/1003504/i09w9p/master.m3u8"
   },
 
@@ -52,10 +52,24 @@ const catalogData = [
     poster: "https://fr.web.img6.acsta.net/r_1920_1080/img/2a/95/2a957aa348ff7469cc49c2f92952067f.jpg",
     background: "https://fr.web.img6.acsta.net/r_1920_1080/img/2a/95/2a957aa348ff7469cc49c2f92952067f.jpg",
     description: "Tentés par un prix alléchant en cas de victoire, des centaines de joueurs désargentés acceptent de s'affronter lors de jeux pour enfants aux enjeux mortels.",
-    streams: [
-      { title: "Saison 1 Épisode 1", season: 1, episode: 1, released: "2021-09-17", url: "https://pulse.topstrime.online/tv/93405/t93qr2/S1/E1/master.m3u8" },
-      { title: "Saison 1 Épisode 2", season: 1, episode: 2, released: "2021-09-17", url: "https://pulse.topstrime.online/tv/93405/yvrujh/S1/E2/master.m3u8" },
-      { title: "Saison 2 Épisode 1", season: 2, episode: 1, released: "2022-09-17", url: "https://pulse.topstrime.online/tv/93405/r6pkqv/S2/E1/master.m3u8" }
+    videos: [
+      { season: 1, episode: 1, title: "Red Light, Green Light", released: "2021-09-17", url: "https://pulse.topstrime.online/tv/93405/t93qr2/S1/E1/master.m3u8" },
+      { season: 1, episode: 2, title: "Hell", released: "2021-09-17", url: "https://pulse.topstrime.online/tv/93405/yvrujh/S1/E2/master.m3u8" },
+      { season: 2, episode: 1, title: "Bread and Lottery", released: "2024-12-26", url: "https://pulse.topstrime.online/tv/93405/r6pkqv/S2/E1/master.m3u8" }
+    ]
+  },
+  
+  {
+    id: "series_got",
+    type: "series",
+    name: "Game of Thrones",
+    poster: "https://fr.web.img2.acsta.net/c_310_420/pictures/19/03/27/10/37/3471175.jpg",
+    background: "https://fr.web.img2.acsta.net/r_1920_1080/pictures/19/03/27/10/37/3471175.jpg",
+    description: "Il y a très longtemps, à une époque oubliée, une force a détruit l'équilibre des saisons. Dans un pays où l'été peut durer plusieurs années et l'hiver toute une vie, des forces sinistres et surnaturelles se pressent aux portes du Royaume des Sept Couronnes.",
+    videos: [
+      { season: 1, episode: 1, title: "Winter Is Coming", released: "2011-04-17", url: "https://pulse.topstrime.online/tv/1399/abc123/S1/E1/master.m3u8" },
+      { season: 1, episode: 2, title: "The Kingsroad", released: "2011-04-24", url: "https://pulse.topstrime.online/tv/1399/def456/S1/E2/master.m3u8" },
+      { season: 2, episode: 1, title: "The North Remembers", released: "2012-04-01", url: "https://pulse.topstrime.online/tv/1399/ghi789/S2/E1/master.m3u8" }
     ]
   }
 ];
@@ -107,11 +121,24 @@ module.exports = (req, res) => {
         }));
     }
 
+    if (type === "movie" && catalogId === "direct_hls") {
+      metas = catalogData
+        .filter(x => x.type === "movie")
+        .map(({ id, name, poster, description }) => ({
+          id,
+          type: "movie",
+          name,
+          poster,
+          description
+        }));
+    }
+
     return sendJSON(res, { metas });
   }
 
   // === META ===
   if (resource === "meta") {
+    const type = parts[1];
     const id = stripJson(parts[2] || "");
     const item = catalogData.find(x => x.id === id);
     if (!item) return sendJSON(res, { err: "Not found" }, 404);
@@ -125,10 +152,10 @@ module.exports = (req, res) => {
       description: item.description
     };
 
-    // Pour les séries, on met chaque épisode avec un id unique
+    // Construction spécifique pour les séries avec le format demandé
     if (item.type === "series") {
-      meta.videos = item.streams.map(ep => ({
-        id: `${item.id}:${ep.season}:${ep.episode}`, // format unique
+      meta.videos = item.videos.map(ep => ({
+        id: `${item.id}:${ep.season}:${ep.episode}`, // format unique requis
         season: ep.season,
         episode: ep.episode,
         title: ep.title,
@@ -141,22 +168,58 @@ module.exports = (req, res) => {
 
   // === STREAM ===
   if (resource === "stream") {
+    const type = parts[1];
     const id = stripJson(parts[2] || "");
-    const item = catalogData.find(x => x.id === id);
-    if (!item) return sendJSON(res, { streams: [] });
-
-    let streams = [];
-
-    if (item.type === "series") {
-      streams = item.streams.map(ep => ({
-        title: ep.title,
-        season: ep.season,
-        episode: ep.episode,
-        url: ep.url
-      }));
+    
+    // Pour les films
+    if (type === "movie") {
+      const item = catalogData.find(x => x.id === id && x.type === "movie");
+      if (!item) return sendJSON(res, { streams: [] });
+      
+      return sendJSON(res, { 
+        streams: [{ 
+          title: item.name, 
+          url: item.stream 
+        }] 
+      });
+    }
+    
+    // Pour les séries - gestion des épisodes individuels
+    if (type === "series") {
+      // Format: series_id:season:episode
+      const [seriesId, season, episode] = id.split(":");
+      const item = catalogData.find(x => x.id === seriesId && x.type === "series");
+      
+      if (!item) return sendJSON(res, { streams: [] });
+      
+      if (season && episode) {
+        // Stream pour un épisode spécifique
+        const episodeData = item.videos.find(ep => 
+          ep.season === parseInt(season) && ep.episode === parseInt(episode)
+        );
+        
+        if (episodeData) {
+          return sendJSON(res, { 
+            streams: [{ 
+              title: episodeData.title, 
+              url: episodeData.url 
+            }] 
+          });
+        }
+      } else {
+        // Stream pour toute la série (tous les épisodes)
+        const streams = item.videos.map(ep => ({
+          title: `S${ep.season}E${ep.episode} - ${ep.title}`,
+          url: ep.url,
+          season: ep.season,
+          episode: ep.episode
+        }));
+        
+        return sendJSON(res, { streams });
+      }
     }
 
-    return sendJSON(res, { streams });
+    return sendJSON(res, { streams: [] });
   }
 
   return sendJSON(res, { err: "Unknown route" }, 404);
