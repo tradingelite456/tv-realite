@@ -1,12 +1,10 @@
 // === Catalogue d'exemple (à personnaliser) ===
 const catalogData = [
-  
   {
     id: "directhls_f1",
     type: "movie",
     name: "F1 (Le Film)",
     poster: "https://fr.web.img3.acsta.net/r_1920_1080/img/b1/78/b178318cb7be01b706863ca6c40a5d89.jpg",
-    background: "https://cdn.passion-horlogere.com/wp-content/uploads/2025/06/film-f1-passion-horlogere14.jpg",
     description: "Sonny Hayes était le prodige de la F1 des années 90 jusqu’à son terrible accident. Trente ans plus tard, devenu un pilote indépendant, il est contacté par Ruben Cervantes, patron d’une écurie en faillite qui le convainc de revenir pour sauver l’équipe et prouver qu’il est toujours le meilleur. Aux côtés de Joshua Pearce, diamant brut prêt à devenir le numéro 1, Sonny réalise vite qu'en F1, son coéquipier est aussi son plus grand rival, que le danger est partout et qu'il risque de tout perdre.",
     stream: "https://pulse.topstrime.online/movie/911430/xjycgu/master.m3u8"
   },
@@ -20,7 +18,7 @@ const catalogData = [
   }
 ];
 
-// Helpers
+// === Helpers ===
 function sendJSON(res, obj, status = 200) {
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Cache-Control", "public, max-age=3600");
@@ -32,7 +30,7 @@ function stripJson(s) {
   return s.replace(/\.json$/, "");
 }
 
-// Router principal
+// === Router principal ===
 module.exports = (req, res) => {
 
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -43,11 +41,9 @@ module.exports = (req, res) => {
     return res.end();
   }
 
-  
   const url = new URL(req.url, "http://localhost"); // base fictive pour parser
-  // Sur Vercel, nos fonctions vivent sous /api/* → on retire ce préfixe
-  const path = url.pathname.replace(/^\/api/, "");
-  const parts = path.split("/").filter(Boolean); // ex: ["catalog","movie","direct_hls.json"]
+  const path = url.pathname.replace(/^\/api/, "");  // Retirer préfixe /api si sur Vercel
+  const parts = path.split("/").filter(Boolean);    // ex: ["catalog","movie","direct_hls.json"]
 
   if (!parts.length) return sendJSON(res, { err: "No route" }, 404);
 
@@ -55,10 +51,10 @@ module.exports = (req, res) => {
 
   // /catalog/:type/:id.json
   if (resource === "catalog") {
-    const type = parts[1];            // "movie"
+    const type = parts[1];                  // "movie"
     const catalogId = stripJson(parts[2] || ""); // "direct_hls"
-    if (type !== "movie" || catalogId !== "direct_hls")
-      return sendJSON(res, { metas: [] });
+
+    if (type !== "movie" || catalogId !== "direct_hls") return sendJSON(res, { metas: [] });
 
     const metas = catalogData.map(({ id, name, poster, type, description }) => ({
       id,
