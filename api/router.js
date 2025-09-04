@@ -46,42 +46,35 @@ const catalogData = [
 
   // === SÉRIES ===
  {
-   
     id: "series_squid",
     type: "series",
     name: "Squid Game",
     poster: "https://fr.web.img6.acsta.net/r_1920_1080/img/2a/95/2a957aa348ff7469cc49c2f92952067f.jpg",
     background: "https://fr.web.img6.acsta.net/r_1920_1080/img/2a/95/2a957aa348ff7469cc49c2f92952067f.jpg",
-    description: "Tentés par un prix alléchant en cas de victoire, des centaines de joueurs désargentés acceptent de s'affronter lors de jeux pour enfants aux enjeux mortels.",
+    description: "Tentés par un prix alléchant en cas de victoire...",
     genres: ["Drama", "Thriller"],
     releaseInfo: "2021-2024",
     imdbRating: 8.0,
     videos: [
       { season: 1, episode: 1, title: "Red Light, Green Light", released: "2021-09-17", url: "https://pulse.topstrime.online/tv/93405/t93qr2/S1/E1/master.m3u8" },
       { season: 1, episode: 2, title: "Hell", released: "2021-09-17", url: "https://pulse.topstrime.online/tv/93405/yvrujh/S1/E2/master.m3u8" },
-      { season: 1, episode: 3, title: "The Man with the Umbrella", released: "2021-09-17", url: "https://pulse.topstrime.online/tv/93405/abc123/S1/E3/master.m3u8" },
-      { season: 2, episode: 1, title: "Bread and Lottery", released: "2024-12-26", url: "https://pulse.topstrime.online/tv/93405/r6pkqv/S2/E1/master.m3u8" },
-      { season: 2, episode: 2, title: "Halloween Party", released: "2024-12-26", url: "https://pulse.topstrime.online/tv/93405/def456/S2/E2/master.m3u8" }
-     
+      { season: 2, episode: 1, title: "Bread and Lottery", released: "2024-12-26", url: "https://pulse.topstrime.online/tv/93405/r6pkqv/S2/E1/master.m3u8" }
     ]
   },
-  
   {
     id: "series_got",
     type: "series",
     name: "Game of Thrones",
     poster: "https://fr.web.img2.acsta.net/c_310_420/pictures/19/03/27/10/37/3471175.jpg",
     background: "https://fr.web.img2.acsta.net/r_1920_1080/pictures/19/03/27/10/37/3471175.jpg",
-    description: "Il y a très longtemps, à une époque oubliée, une force a détruit l'équilibre des saisons. Dans un pays où l'été peut durer plusieurs années et l'hiver toute une vie, des forces sinistres et surnaturelles se pressent aux portes du Royaume des Sept Couronnes.",
+    description: "Il y a très longtemps, à une époque oubliée...",
     genres: ["Drama", "Fantasy", "Action"],
     releaseInfo: "2011-2019",
     imdbRating: 9.3,
     videos: [
       { season: 1, episode: 1, title: "Winter Is Coming", released: "2011-04-17", url: "https://pulse.topstrime.online/tv/1399/abc123/S1/E1/master.m3u8" },
       { season: 1, episode: 2, title: "The Kingsroad", released: "2011-04-24", url: "https://pulse.topstrime.online/tv/1399/def456/S1/E2/master.m3u8" },
-      { season: 1, episode: 3, title: "Lord Snow", released: "2011-05-01", url: "https://pulse.topstrime.online/tv/1399/ghi789/S1/E3/master.m3u8" },
-      { season: 2, episode: 1, title: "The North Remembers", released: "2012-04-01", url: "https://pulse.topstrime.online/tv/1399/jkl012/S2/E1/master.m3u8" },
-      { season: 2, episode: 2, title: "The Night Lands", released: "2012-04-08", url: "https://pulse.topstrime.online/tv/1399/mno345/S2/E2/master.m3u8" }
+      { season: 2, episode: 1, title: "The North Remembers", released: "2012-04-01", url: "https://pulse.topstrime.online/tv/1399/jkl012/S2/E1/master.m3u8" }
     ]
   }
 ];
@@ -91,33 +84,13 @@ const manifest = {
   id: "community.directhls",
   version: "1.0.0",
   catalogs: [
-    {
-      type: "movie",
-      id: "direct_hls",
-      name: "Direct HLS Movies"
-    },
-    {
-      type: "series",
-      id: "direct_hls", 
-      name: "Direct HLS Series"
-    }
+    { type: "movie", id: "direct_hls", name: "Direct HLS Movies" },
+    { type: "series", id: "direct_hls", name: "Direct HLS Series" }
   ],
   resources: [
-    {
-      name: "catalog",
-      types: ["movie", "series"],
-      idPrefixes: ["direct_hls"]
-    },
-    {
-      name: "meta",
-      types: ["movie", "series"],
-      idPrefixes: ["directhls_", "series_"]
-    },
-    {
-      name: "stream",
-      types: ["movie", "series"],
-      idPrefixes: ["directhls_", "series_"]
-    }
+    { name: "catalog", types: ["movie", "series"], idPrefixes: ["directhls_", "series_"] },
+    { name: "meta", types: ["movie", "series"], idPrefixes: ["directhls_", "series_"] },
+    { name: "stream", types: ["movie", "series"], idPrefixes: ["directhls_", "series_"] }
   ],
   types: ["movie", "series"],
   name: "Direct HLS Addon",
@@ -146,50 +119,38 @@ module.exports = (req, res) => {
   const url = new URL(req.url, "http://localhost");
   const path = url.pathname.replace(/^\/api/, "");
   const parts = path.split("/").filter(Boolean);
+  if (!parts.length) return sendJSON(res, { err: "No route" }, 404);
+
+  const [resource] = parts;
 
   // === MANIFEST ===
   if (path === "/manifest.json" || path === "/manifest") {
     return sendJSON(res, manifest);
   }
 
-  if (!parts.length) return sendJSON(res, { err: "No route" }, 404);
-
-  const [resource] = parts;
-
   // === CATALOG ===
   if (resource === "catalog") {
     const type = parts[1];
     const catalogId = stripJson(parts[2] || "");
 
-    let metas = [];
-
-    if (type === "series" && catalogId === "direct_hls") {
-      metas = catalogData
-        .filter(x => x.type === "series")
-        .map(({ id, name, poster, background, description, genres, releaseInfo, imdbRating }) => ({
-          id,
-          type: "series",
-          name,
-          poster,
-          background,
-          description,
-          genres: genres || [],
-          releaseInfo,
-          imdbRating
-        }));
-    }
-
-    if (type === "movie" && catalogId === "direct_hls") {
-      metas = catalogData
-        .filter(x => x.type === "movie")
-        .map(({ id, name, poster, description }) => ({
-          id,
-          type: "movie",
-          name,
-          poster,
-          description
-        }));
-    }
+    let metas = catalogData
+      .filter(x => x.type === type)
+      .map(item => {
+        const base = {
+          id: item.id,
+          type: item.type,
+          name: item.name,
+          poster: item.poster,
+          description: item.description,
+          background: item.background || item.poster
+        };
+        if (item.type === "series") {
+          base.genres = item.genres || [];
+          base.releaseInfo = item.releaseInfo || "";
+          base.imdbRating = item.imdbRating || 0;
+        }
+        return base;
+      });
 
     return sendJSON(res, { metas });
   }
@@ -209,13 +170,10 @@ module.exports = (req, res) => {
       background: item.background || item.poster,
       description: item.description
     };
-
-    // Ajout des champs optionnels
     if (item.genres) meta.genres = item.genres;
     if (item.releaseInfo) meta.releaseInfo = item.releaseInfo;
     if (item.imdbRating) meta.imdbRating = item.imdbRating;
 
-    // CRUCIAL: Pour les séries, on doit structurer les épisodes correctement
     if (item.type === "series" && item.videos) {
       meta.videos = item.videos.map(ep => ({
         id: `${item.id}:${ep.season}:${ep.episode}`,
@@ -234,71 +192,32 @@ module.exports = (req, res) => {
   if (resource === "stream") {
     const type = parts[1];
     const id = stripJson(parts[2] || "");
-    
-    console.log(`STREAM REQUEST: type=${type}, id=${id}`); // Debug
-    
-    // Pour les films
+
     if (type === "movie") {
       const item = catalogData.find(x => x.id === id && x.type === "movie");
       if (!item) return sendJSON(res, { streams: [] });
-      
-      return sendJSON(res, { 
-        streams: [{ 
-          name: "Direct HLS",
-          title: item.name, 
-          url: item.stream 
-        }] 
+      return sendJSON(res, {
+        streams: [{ name: "Direct HLS", title: item.name, url: item.stream }]
       });
     }
-    
-    // Pour les séries - CRUCIAL: Gérer les épisodes individuels
+
     if (type === "series") {
-      // Format: series_id:season:episode
       const idParts = id.split(":");
-      
       if (idParts.length === 3) {
-        // Episode spécifique
         const [seriesId, seasonStr, episodeStr] = idParts;
         const item = catalogData.find(x => x.id === seriesId && x.type === "series");
-        
-        if (!item || !item.videos) {
-          console.log(`Series not found: ${seriesId}`);
-          return sendJSON(res, { streams: [] });
-        }
-        
+        if (!item || !item.videos) return sendJSON(res, { streams: [] });
+
         const season = parseInt(seasonStr);
         const episode = parseInt(episodeStr);
-        
-        const episodeData = item.videos.find(ep => 
-          ep.season === season && ep.episode === episode
-        );
-        
+        const episodeData = item.videos.find(ep => ep.season === season && ep.episode === episode);
+
         if (episodeData) {
-          console.log(`Episode found: S${season}E${episode}`);
-          return sendJSON(res, { 
-            streams: [{ 
-              name: "Direct HLS",
-              title: `S${season}E${episode} - ${episodeData.title}`,
-              url: episodeData.url
-            }] 
-          });
-        } else {
-          console.log(`Episode not found: S${season}E${episode}`);
-        }
-      } else {
-        // Série complète (ne devrait pas arriver normalement)
-        const item = catalogData.find(x => x.id === id && x.type === "series");
-        if (item && item.videos) {
-          return sendJSON(res, { 
-            streams: item.videos.map(ep => ({
-              name: "Direct HLS",
-              title: `S${ep.season}E${ep.episode} - ${ep.title}`,
-              url: ep.url
-            }))
+          return sendJSON(res, {
+            streams: [{ name: "Direct HLS", title: `S${season}E${episode} - ${episodeData.title}`, url: episodeData.url }]
           });
         }
       }
-      
       return sendJSON(res, { streams: [] });
     }
 
