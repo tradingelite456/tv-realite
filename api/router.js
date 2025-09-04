@@ -12,6 +12,16 @@ const catalogData = [
   },
 
    {
+    id: "directhls_tuche",
+    type: "movie",
+    name: "God Save the Tuche (2025)",
+    poster: "https://i.ibb.co/5W0shJsc/movie-1137759-posters-1.jpg",
+    background: "https://i.ibb.co/nMsjnsQT/movie-1137759-backdrops-2.jpg",
+    description: "Les Tuche mènent à nouveau une vie paisible à Bouzolles. Mais lorsque Jiji, le petit fils de Jeff et Cathy, est sélectionné pour un stage de football à Arsenal, c’est l’occasion rêvée pour toute la famille d’aller découvrir l’Angleterre et d’y rencontrer la famille royale. Celle-ci ne s’imagine pas encore que le nom Tuche restera à jamais gravé dans l’histoire de la perfide Albion.",
+    stream: "https://pulse.topstrime.online/movie/1137759/croued/master.m3u8"
+  },
+
+   {
     id: "directhls_nobody",
     type: "movie",
     name: "Nobody2",
