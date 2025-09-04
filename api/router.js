@@ -81,6 +81,7 @@ const catalogData = [
 }
 ];
 
+
 // === Helpers ===
 function sendJSON(res, obj, status = 200) {
   res.setHeader("Content-Type", "application/json");
@@ -103,7 +104,7 @@ module.exports = (req, res) => {
     return res.end();
   }
 
-  const url = new URL(req.url, "http://localhost"); 
+  const url = new URL(req.url, "http://localhost");
   const path = url.pathname.replace(/^\/api/, "");
   const parts = path.split("/").filter(Boolean);
 
@@ -113,8 +114,8 @@ module.exports = (req, res) => {
 
   // === CATALOG ===
   if (resource === "catalog") {
-    const type = parts[1]; 
-    const catalogId = stripJson(parts[2] || ""); 
+    const type = parts[1];
+    const catalogId = stripJson(parts[2] || "");
 
     let metas = [];
 
@@ -133,13 +134,14 @@ module.exports = (req, res) => {
     if (type === "series" && catalogId === "direct_hls") {
       metas = catalogData
         .filter(x => x.type === "series")
-        .map(({ id, name, poster, background, type, description }) => ({
+        .map(({ id, name, poster, background, type, description, seasons }) => ({
           id,
           type: type || "series",
           name,
           poster,
           background,
-          description
+          description,
+          seasons: seasons.map(s => ({ season: s.season })) // ne renvoie que la liste des saisons
         }));
     }
 
@@ -180,9 +182,14 @@ module.exports = (req, res) => {
         }
       ];
     } else if (item.type === "series") {
-      streams = item.streams.map(ep => ({
+      const seasonParam = url.searchParams.get("season"); // ?season=1
+      const seasonNumber = seasonParam ? parseInt(seasonParam) : 1;
+
+      const seasonData = item.seasons.find(s => s.season === seasonNumber) || { episodes: [] };
+
+      streams = seasonData.episodes.map(ep => ({
         title: ep.title,
-        season: ep.season,
+        season: seasonNumber,
         episode: ep.episode,
         url: ep.url
       }));
