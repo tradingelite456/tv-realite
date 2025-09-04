@@ -87,7 +87,6 @@ function stripJson(s) {
 
 // === Router principal ===
 module.exports = (req, res) => {
-
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -96,33 +95,50 @@ module.exports = (req, res) => {
     return res.end();
   }
 
-  const url = new URL(req.url, "http://localhost"); // base fictive pour parser
-  const path = url.pathname.replace(/^\/api/, "");  // Retirer préfixe /api si sur Vercel
-  const parts = path.split("/").filter(Boolean);    // ex: ["catalog","movie","direct_hls.json"]
+  const url = new URL(req.url, "http://localhost"); 
+  const path = url.pathname.replace(/^\/api/, "");
+  const parts = path.split("/").filter(Boolean);
 
   if (!parts.length) return sendJSON(res, { err: "No route" }, 404);
 
   const [resource] = parts;
 
-  // /catalog/:type/:id.json
+  // === CATALOG ===
   if (resource === "catalog") {
-    const type = parts[1];                  // "movie"
-    const catalogId = stripJson(parts[2] || ""); // "direct_hls"
+    const type = parts[1]; 
+    const catalogId = stripJson(parts[2] || ""); 
 
-    if (type !== "movie" || catalogId !== "direct_hls") return sendJSON(res, { metas: [] });
+    let metas = [];
 
-    const metas = catalogData.map(({ id, name, poster, type, description }) => ({
-      id,
-      type: type || "movie",
-      name,
-      poster,
-      description
-    }));
+    if (type === "movie" && catalogId === "direct_hls") {
+      metas = catalogData
+        .filter(x => x.type === "movie")
+        .map(({ id, name, poster, type, description }) => ({
+          id,
+          type: type || "movie",
+          name,
+          poster,
+          description
+        }));
+    }
+
+    if (type === "series" && catalogId === "direct_hls") {
+      metas = catalogData
+        .filter(x => x.type === "series")
+        .map(({ id, name, poster, background, type, description }) => ({
+          id,
+          type: type || "series",
+          name,
+          poster,
+          background,
+          description
+        }));
+    }
 
     return sendJSON(res, { metas });
   }
 
-  // /meta/:type/:id.json
+  // === META ===
   if (resource === "meta") {
     const id = stripJson(parts[2] || "");
     const item = catalogData.find(x => x.id === id);
@@ -133,25 +149,36 @@ module.exports = (req, res) => {
       type: item.type || "movie",
       name: item.name,
       poster: item.poster,
+      background: item.background || undefined,
       description: item.description
     };
 
     return sendJSON(res, { meta });
   }
 
-  // /stream/:type/:id.json
+  // === STREAM ===
   if (resource === "stream") {
     const id = stripJson(parts[2] || "");
     const item = catalogData.find(x => x.id === id);
     if (!item) return sendJSON(res, { streams: [] });
 
-    const streams = [
-      {
-        title: "Direct HLS",
-        url: item.stream
-        // Optionnel: behaviorHints, subtitles, etc.
-      }
-    ];
+    let streams = [];
+
+    if (item.type === "movie") {
+      streams = [
+        {
+          title: "Direct HLS",
+          url: item.stream
+        }
+      ];
+    } else if (item.type === "series") {
+      streams = item.streams.map(ep => ({
+        title: ep.title,
+        season: ep.season,
+        episode: ep.episode,
+        url: ep.url
+      }));
+    }
 
     return sendJSON(res, { streams });
   }
