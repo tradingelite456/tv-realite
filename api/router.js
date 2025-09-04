@@ -149,7 +149,7 @@ module.exports = (req, res) => {
   }
 
   // === META ===
-  if (resource === "meta") {
+if (resource === "meta") {
     const id = stripJson(parts[2] || "");
     const item = catalogData.find(x => x.id === id);
     if (!item) return sendJSON(res, { err: "Not found" }, 404);
@@ -160,11 +160,14 @@ module.exports = (req, res) => {
       name: item.name,
       poster: item.poster,
       background: item.background || undefined,
-      description: item.description
+      description: item.description,
+      // 👇 pour les séries : Stremio attend la liste des saisons ici
+      seasons: item.type === "series" ? item.seasons.map(s => ({ season: s.season })) : undefined
     };
 
     return sendJSON(res, { meta });
-  }
+}
+
 
   // === STREAM ===
   if (resource === "stream") {
