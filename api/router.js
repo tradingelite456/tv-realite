@@ -84,6 +84,44 @@ const catalogData = [
   }
 ];
 
+// === Manifest Stremio ===
+const manifest = {
+  id: "community.directhls",
+  version: "1.0.0",
+  catalogs: [
+    {
+      type: "movie",
+      id: "direct_hls",
+      name: "Direct HLS Movies"
+    },
+    {
+      type: "series",
+      id: "direct_hls", 
+      name: "Direct HLS Series"
+    }
+  ],
+  resources: [
+    {
+      name: "catalog",
+      types: ["movie", "series"],
+      idPrefixes: ["direct_hls"]
+    },
+    {
+      name: "meta",
+      types: ["movie", "series"],
+      idPrefixes: ["directhls_", "series_"]
+    },
+    {
+      name: "stream",
+      types: ["movie", "series"],
+      idPrefixes: ["directhls_", "series_"]
+    }
+  ],
+  types: ["movie", "series"],
+  name: "Direct HLS Addon",
+  description: "Streaming direct via HLS pour films et séries"
+};
+
 // === Helpers ===
 function sendJSON(res, obj, status = 200) {
   res.setHeader("Content-Type", "application/json");
@@ -106,6 +144,11 @@ module.exports = (req, res) => {
   const url = new URL(req.url, "http://localhost");
   const path = url.pathname.replace(/^\/api/, "");
   const parts = path.split("/").filter(Boolean);
+
+  // === MANIFEST ===
+  if (path === "/manifest.json" || path === "/manifest") {
+    return sendJSON(res, manifest);
+  }
 
   if (!parts.length) return sendJSON(res, { err: "No route" }, 404);
 
@@ -162,17 +205,15 @@ module.exports = (req, res) => {
       name: item.name,
       poster: item.poster,
       background: item.background || item.poster,
-      description: item.description,
-      genres: item.genres || [],
-      releaseInfo: item.releaseInfo
+      description: item.description
     };
 
-    // Ajout du rating si disponible
-    if (item.imdbRating) {
-      meta.imdbRating = item.imdbRating;
-    }
+    // Ajout des champs optionnels
+    if (item.genres) meta.genres = item.genres;
+    if (item.releaseInfo) meta.releaseInfo = item.releaseInfo;
+    if (item.imdbRating) meta.imdbRating = item.imdbRating;
 
-    // Construction spécifique pour les séries avec le format Stremio
+    // CRUCIAL: Pour les séries, on doit structurer les épisodes correctement
     if (item.type === "series" && item.videos) {
       meta.videos = item.videos.map(ep => ({
         id: `${item.id}:${ep.season}:${ep.episode}`,
@@ -192,6 +233,8 @@ module.exports = (req, res) => {
     const type = parts[1];
     const id = stripJson(parts[2] || "");
     
+    console.log(`STREAM REQUEST: type=${type}, id=${id}`); // Debug
+    
     // Pour les films
     if (type === "movie") {
       const item = catalogData.find(x => x.id === id && x.type === "movie");
@@ -206,18 +249,21 @@ module.exports = (req, res) => {
       });
     }
     
-    // Pour les séries - gestion des épisodes individuels
+    // Pour les séries - CRUCIAL: Gérer les épisodes individuels
     if (type === "series") {
-      // Format attendu: series_id:season:episode
-      const [seriesId, seasonStr, episodeStr] = id.split(":");
-      const item = catalogData.find(x => x.id === seriesId && x.type === "series");
+      // Format: series_id:season:episode
+      const idParts = id.split(":");
       
-      if (!item || !item.videos) {
-        return sendJSON(res, { streams: [] });
-      }
-      
-      if (seasonStr && episodeStr) {
-        // Stream pour un épisode spécifique
+      if (idParts.length === 3) {
+        // Episode spécifique
+        const [seriesId, seasonStr, episodeStr] = idParts;
+        const item = catalogData.find(x => x.id === seriesId && x.type === "series");
+        
+        if (!item || !item.videos) {
+          console.log(`Series not found: ${seriesId}`);
+          return sendJSON(res, { streams: [] });
+        }
+        
         const season = parseInt(seasonStr);
         const episode = parseInt(episodeStr);
         
@@ -226,12 +272,27 @@ module.exports = (req, res) => {
         );
         
         if (episodeData) {
+          console.log(`Episode found: S${season}E${episode}`);
           return sendJSON(res, { 
             streams: [{ 
               name: "Direct HLS",
               title: `S${season}E${episode} - ${episodeData.title}`,
               url: episodeData.url
             }] 
+          });
+        } else {
+          console.log(`Episode not found: S${season}E${episode}`);
+        }
+      } else {
+        // Série complète (ne devrait pas arriver normalement)
+        const item = catalogData.find(x => x.id === id && x.type === "series");
+        if (item && item.videos) {
+          return sendJSON(res, { 
+            streams: item.videos.map(ep => ({
+              name: "Direct HLS",
+              title: `S${ep.season}E${ep.episode} - ${ep.title}`,
+              url: ep.url
+            }))
           });
         }
       }
