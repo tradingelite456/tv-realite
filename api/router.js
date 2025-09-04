@@ -1,5 +1,6 @@
 // === Catalogue d'exemple (à personnaliser) ===
 const catalogData = [
+  
   {
     id: "directhls_f1",
     type: "movie",
