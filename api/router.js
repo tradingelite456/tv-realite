@@ -52,10 +52,15 @@ const catalogData = [
     poster: "https://fr.web.img6.acsta.net/r_1920_1080/img/2a/95/2a957aa348ff7469cc49c2f92952067f.jpg",
     background: "https://fr.web.img6.acsta.net/r_1920_1080/img/2a/95/2a957aa348ff7469cc49c2f92952067f.jpg",
     description: "Tentés par un prix alléchant en cas de victoire, des centaines de joueurs désargentés acceptent de s'affronter lors de jeux pour enfants aux enjeux mortels.",
+    genres: ["Drama", "Thriller"],
+    releaseInfo: "2021-2024",
+    imdbRating: 8.0,
     videos: [
       { season: 1, episode: 1, title: "Red Light, Green Light", released: "2021-09-17", url: "https://pulse.topstrime.online/tv/93405/t93qr2/S1/E1/master.m3u8" },
       { season: 1, episode: 2, title: "Hell", released: "2021-09-17", url: "https://pulse.topstrime.online/tv/93405/yvrujh/S1/E2/master.m3u8" },
-      { season: 2, episode: 1, title: "Bread and Lottery", released: "2024-12-26", url: "https://pulse.topstrime.online/tv/93405/r6pkqv/S2/E1/master.m3u8" }
+      { season: 1, episode: 3, title: "The Man with the Umbrella", released: "2021-09-17", url: "https://pulse.topstrime.online/tv/93405/abc123/S1/E3/master.m3u8" },
+      { season: 2, episode: 1, title: "Bread and Lottery", released: "2024-12-26", url: "https://pulse.topstrime.online/tv/93405/r6pkqv/S2/E1/master.m3u8" },
+      { season: 2, episode: 2, title: "Halloween Party", released: "2024-12-26", url: "https://pulse.topstrime.online/tv/93405/def456/S2/E2/master.m3u8" }
     ]
   },
   
@@ -66,10 +71,15 @@ const catalogData = [
     poster: "https://fr.web.img2.acsta.net/c_310_420/pictures/19/03/27/10/37/3471175.jpg",
     background: "https://fr.web.img2.acsta.net/r_1920_1080/pictures/19/03/27/10/37/3471175.jpg",
     description: "Il y a très longtemps, à une époque oubliée, une force a détruit l'équilibre des saisons. Dans un pays où l'été peut durer plusieurs années et l'hiver toute une vie, des forces sinistres et surnaturelles se pressent aux portes du Royaume des Sept Couronnes.",
+    genres: ["Drama", "Fantasy", "Action"],
+    releaseInfo: "2011-2019",
+    imdbRating: 9.3,
     videos: [
       { season: 1, episode: 1, title: "Winter Is Coming", released: "2011-04-17", url: "https://pulse.topstrime.online/tv/1399/abc123/S1/E1/master.m3u8" },
       { season: 1, episode: 2, title: "The Kingsroad", released: "2011-04-24", url: "https://pulse.topstrime.online/tv/1399/def456/S1/E2/master.m3u8" },
-      { season: 2, episode: 1, title: "The North Remembers", released: "2012-04-01", url: "https://pulse.topstrime.online/tv/1399/ghi789/S2/E1/master.m3u8" }
+      { season: 1, episode: 3, title: "Lord Snow", released: "2011-05-01", url: "https://pulse.topstrime.online/tv/1399/ghi789/S1/E3/master.m3u8" },
+      { season: 2, episode: 1, title: "The North Remembers", released: "2012-04-01", url: "https://pulse.topstrime.online/tv/1399/jkl012/S2/E1/master.m3u8" },
+      { season: 2, episode: 2, title: "The Night Lands", released: "2012-04-08", url: "https://pulse.topstrime.online/tv/1399/mno345/S2/E2/master.m3u8" }
     ]
   }
 ];
@@ -111,13 +121,16 @@ module.exports = (req, res) => {
     if (type === "series" && catalogId === "direct_hls") {
       metas = catalogData
         .filter(x => x.type === "series")
-        .map(({ id, name, poster, background, description }) => ({
+        .map(({ id, name, poster, background, description, genres, releaseInfo, imdbRating }) => ({
           id,
           type: "series",
           name,
           poster,
           background,
-          description
+          description,
+          genres: genres || [],
+          releaseInfo,
+          imdbRating
         }));
     }
 
@@ -148,18 +161,26 @@ module.exports = (req, res) => {
       type: item.type,
       name: item.name,
       poster: item.poster,
-      background: item.background,
-      description: item.description
+      background: item.background || item.poster,
+      description: item.description,
+      genres: item.genres || [],
+      releaseInfo: item.releaseInfo
     };
 
-    // Construction spécifique pour les séries avec le format demandé
-    if (item.type === "series") {
+    // Ajout du rating si disponible
+    if (item.imdbRating) {
+      meta.imdbRating = item.imdbRating;
+    }
+
+    // Construction spécifique pour les séries avec le format Stremio
+    if (item.type === "series" && item.videos) {
       meta.videos = item.videos.map(ep => ({
-        id: `${item.id}:${ep.season}:${ep.episode}`, // format unique requis
+        id: `${item.id}:${ep.season}:${ep.episode}`,
         season: ep.season,
         episode: ep.episode,
         title: ep.title,
-        released: ep.released
+        released: ep.released,
+        overview: ep.overview || ""
       }));
     }
 
@@ -178,6 +199,7 @@ module.exports = (req, res) => {
       
       return sendJSON(res, { 
         streams: [{ 
+          name: "Direct HLS",
           title: item.name, 
           url: item.stream 
         }] 
@@ -186,37 +208,35 @@ module.exports = (req, res) => {
     
     // Pour les séries - gestion des épisodes individuels
     if (type === "series") {
-      // Format: series_id:season:episode
-      const [seriesId, season, episode] = id.split(":");
+      // Format attendu: series_id:season:episode
+      const [seriesId, seasonStr, episodeStr] = id.split(":");
       const item = catalogData.find(x => x.id === seriesId && x.type === "series");
       
-      if (!item) return sendJSON(res, { streams: [] });
+      if (!item || !item.videos) {
+        return sendJSON(res, { streams: [] });
+      }
       
-      if (season && episode) {
+      if (seasonStr && episodeStr) {
         // Stream pour un épisode spécifique
+        const season = parseInt(seasonStr);
+        const episode = parseInt(episodeStr);
+        
         const episodeData = item.videos.find(ep => 
-          ep.season === parseInt(season) && ep.episode === parseInt(episode)
+          ep.season === season && ep.episode === episode
         );
         
         if (episodeData) {
           return sendJSON(res, { 
             streams: [{ 
-              title: episodeData.title, 
-              url: episodeData.url 
+              name: "Direct HLS",
+              title: `S${season}E${episode} - ${episodeData.title}`,
+              url: episodeData.url
             }] 
           });
         }
-      } else {
-        // Stream pour toute la série (tous les épisodes)
-        const streams = item.videos.map(ep => ({
-          title: `S${ep.season}E${ep.episode} - ${ep.title}`,
-          url: ep.url,
-          season: ep.season,
-          episode: ep.episode
-        }));
-        
-        return sendJSON(res, { streams });
       }
+      
+      return sendJSON(res, { streams: [] });
     }
 
     return sendJSON(res, { streams: [] });
