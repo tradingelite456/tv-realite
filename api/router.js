@@ -41,6 +41,35 @@ const catalogData = [
     poster: "https://fr.web.img5.acsta.net/r_1920_1080/img/4e/64/4e644edc4b90cae39ea31727a29cdb09.jpg",
     description: "Marie, 80 ans, en a ras le bol de sa maladie. Elle a un plan : partir en Suisse pour mettre fin à ses jours. Mais au moment de l’annoncer à Bruno, son fils irresponsable, et Anna sa petite-fille en crise d’ado, elle panique et invente un énorme mensonge. Prétextant un mystérieux héritage à aller chercher dans une banque suisse, elle leur propose de faire un voyage tous ensemble. Complice involontaire de cette mascarade, Rudy, un aide-soignant tout juste rencontré la veille, va prendre le volant du vieux camping car familial, et conduire cette famille dans un voyage inattendu.",
     stream: "https://pulse.topstrime.online/movie/1003504/i09w9p/master.m3u8"
+  },
+
+  // === SÉRIES ===
+  {
+    id: "series_squid",
+    type: "series",
+    name: "Squid Game",
+    poster: "https://fr.web.img6.acsta.net/r_1920_1080/img/2a/95/2a957aa348ff7469cc49c2f92952067f.jpg",
+    description: "Tentés par un prix alléchant en cas de victoire, des centaines de joueurs désargentés acceptent de s'affronter lors de jeux pour enfants aux enjeux mortels.",
+    streams: [
+      {
+        title: "Saison 1 Épisode 1",
+        season: 1,
+        episode: 1,
+        url: "https://pulse.topstrime.online/tv/93405/t93qr2/S1/E1/master.m3u8"
+      },
+      {
+        title: "Saison 1 Épisode 2",
+        season: 1,
+        episode: 2,
+        url: "https://pulse.topstrime.online/tv/93405/yvrujh/S1/E2/master.m3u8"
+      },
+      {
+        title: "Saison 2 Épisode 1",
+        season: 2,
+        episode: 1,
+        url: "https://pulse.topstrime.online/tv/93405/r6pkqv/S2/E1/master.m3u8"
+      }
+    ]
   }
 ];
 
