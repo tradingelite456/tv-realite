@@ -46,41 +46,19 @@ const catalogData = [
 
   // === SÉRIES ===
  {
-  id: "series_squid",
-  type: "series",
-  name: "Squid Game",
-  poster: "https://fr.web.img6.acsta.net/r_1920_1080/img/2a/95/2a957aa348ff7469cc49c2f92952067f.jpg",
-  description: "Tentés par un prix alléchant en cas de victoire, des centaines de joueurs désargentés acceptent de s'affronter lors de jeux pour enfants aux enjeux mortels.",
-  seasons: [
-    {
-      season: 1,
-      episodes: [
-        {
-          episode: 1,
-          title: "Saison 1 Épisode 1",
-          url: "https://pulse.topstrime.online/tv/93405/t93qr2/S1/E1/master.m3u8"
-        },
-        {
-          episode: 2,
-          title: "Saison 1 Épisode 2",
-          url: "https://pulse.topstrime.online/tv/93405/yvrujh/S1/E2/master.m3u8"
-        }
-      ]
-    },
-    {
-      season: 2,
-      episodes: [
-        {
-          episode: 1,
-          title: "Saison 2 Épisode 1",
-          url: "https://pulse.topstrime.online/tv/93405/r6pkqv/S2/E1/master.m3u8"
-        }
-      ]
-    }
-  ]
-}
+    id: "series_squid",
+    type: "series",
+    name: "Squid Game",
+    poster: "https://fr.web.img6.acsta.net/r_1920_1080/img/2a/95/2a957aa348ff7469cc49c2f92952067f.jpg",
+    background: "https://fr.web.img6.acsta.net/r_1920_1080/img/2a/95/2a957aa348ff7469cc49c2f92952067f.jpg",
+    description: "Tentés par un prix alléchant en cas de victoire, des centaines de joueurs désargentés acceptent de s'affronter lors de jeux pour enfants aux enjeux mortels.",
+    streams: [
+      { title: "Saison 1 Épisode 1", season: 1, episode: 1, released: "2021-09-17", url: "https://pulse.topstrime.online/tv/93405/t93qr2/S1/E1/master.m3u8" },
+      { title: "Saison 1 Épisode 2", season: 1, episode: 2, released: "2021-09-17", url: "https://pulse.topstrime.online/tv/93405/yvrujh/S1/E2/master.m3u8" },
+      { title: "Saison 2 Épisode 1", season: 2, episode: 1, released: "2022-09-17", url: "https://pulse.topstrime.online/tv/93405/r6pkqv/S2/E1/master.m3u8" }
+    ]
+  }
 ];
-
 
 // === Helpers ===
 function sendJSON(res, obj, status = 200) {
@@ -99,10 +77,7 @@ module.exports = (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  if (req.method === "OPTIONS") {
-    res.statusCode = 200;
-    return res.end();
-  }
+  if (req.method === "OPTIONS") return res.end();
 
   const url = new URL(req.url, "http://localhost");
   const path = url.pathname.replace(/^\/api/, "");
@@ -119,29 +94,16 @@ module.exports = (req, res) => {
 
     let metas = [];
 
-    if (type === "movie" && catalogId === "direct_hls") {
-      metas = catalogData
-        .filter(x => x.type === "movie")
-        .map(({ id, name, poster, type, description }) => ({
-          id,
-          type: type || "movie",
-          name,
-          poster,
-          description
-        }));
-    }
-
     if (type === "series" && catalogId === "direct_hls") {
       metas = catalogData
         .filter(x => x.type === "series")
-        .map(({ id, name, poster, background, type, description, seasons }) => ({
+        .map(({ id, name, poster, background, description }) => ({
           id,
-          type: type || "series",
+          type: "series",
           name,
           poster,
           background,
-          description,
-          seasons: seasons.map(s => ({ season: s.season })) // ne renvoie que la liste des saisons
+          description
         }));
     }
 
@@ -149,25 +111,33 @@ module.exports = (req, res) => {
   }
 
   // === META ===
-if (resource === "meta") {
+  if (resource === "meta") {
     const id = stripJson(parts[2] || "");
     const item = catalogData.find(x => x.id === id);
     if (!item) return sendJSON(res, { err: "Not found" }, 404);
 
     const meta = {
       id: item.id,
-      type: item.type || "movie",
+      type: item.type,
       name: item.name,
       poster: item.poster,
-      background: item.background || undefined,
-      description: item.description,
-      // 👇 pour les séries : Stremio attend la liste des saisons ici
-      seasons: item.type === "series" ? item.seasons.map(s => ({ season: s.season })) : undefined
+      background: item.background,
+      description: item.description
     };
 
-    return sendJSON(res, { meta });
-}
+    // Pour les séries, on met chaque épisode avec un id unique
+    if (item.type === "series") {
+      meta.videos = item.streams.map(ep => ({
+        id: `${item.id}:${ep.season}:${ep.episode}`, // format unique
+        season: ep.season,
+        episode: ep.episode,
+        title: ep.title,
+        released: ep.released
+      }));
+    }
 
+    return sendJSON(res, { meta });
+  }
 
   // === STREAM ===
   if (resource === "stream") {
@@ -177,22 +147,10 @@ if (resource === "meta") {
 
     let streams = [];
 
-    if (item.type === "movie") {
-      streams = [
-        {
-          title: "Direct HLS",
-          url: item.stream
-        }
-      ];
-    } else if (item.type === "series") {
-      const seasonParam = url.searchParams.get("season"); // ?season=1
-      const seasonNumber = seasonParam ? parseInt(seasonParam) : 1;
-
-      const seasonData = item.seasons.find(s => s.season === seasonNumber) || { episodes: [] };
-
-      streams = seasonData.episodes.map(ep => ({
+    if (item.type === "series") {
+      streams = item.streams.map(ep => ({
         title: ep.title,
-        season: seasonNumber,
+        season: ep.season,
         episode: ep.episode,
         url: ep.url
       }));
