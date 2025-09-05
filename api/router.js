@@ -40,18 +40,38 @@ const catalogData = [
     name: "God Save the Tuche",
     stream: "https://pulse.topstrime.online/movie/1137759/croued/master.m3u8"
   },
-  {
-    id: "tt13443470",
-    type: "series",
-    name: "Mercredi",
-    poster: fetchPosterFromIMDb("tt13443470"),
-    description: "Série Netflix suivant les aventures de Mercredi Addams à l’Académie Nevermore.",
-    videos: [
-      { id: "tt13443470:1:1", title: "Saison 1 Épisode 1", season: 1, episode: 1 },
-      { id: "tt13443470:1:2", title: "Saison 1 Épisode 2", season: 1, episode: 2 }
-      // ajoute les autres épisodes ici sans les flux
-    ]
-  }
+{
+  id: "tt13443470",
+  type: "series",
+  name: "Mercredi",
+  poster: fetchPosterFromIMDb("tt13443470"),
+  description: "Série Netflix suivant les aventures de Mercredi Addams à l’Académie Nevermore.",
+  videos: [
+    {
+      id: "tt13443470:1:1",
+      title: "Saison 1 Épisode 1",
+      season: 1,
+      episode: 1,
+      stream: "https://pulse.topstrime.online/series/mercredi/s1e1/master.m3u8"
+    },
+    {
+      id: "tt13443470:1:2",
+      title: "Saison 1 Épisode 2",
+      season: 1,
+      episode: 2,
+      stream: "https://pulse.topstrime.online/series/mercredi/s1e2/master.m3u8"
+    },
+    {
+      id: "tt13443470:1:3",
+      title: "Saison 1 Épisode 3",
+      season: 1,
+      episode: 3,
+      stream: "https://pulse.topstrime.online/series/mercredi/s1e3/master.m3u8"
+    }
+    // ajoute autant d'épisodes que nécessaire
+  ]
+}
+
 ];
 
 // === Manifest ===
