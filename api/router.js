@@ -28,6 +28,60 @@ const catalogData = [
     poster: fetchPosterFromIMDb("tt20969586"),
     stream: "https://pulse.topstrime.online/movie/986056/82nb0j/master.m3u8"
   },
+
+ {
+    id: "tt35300972",
+    type: "movie",
+    name: "Lune de miel avec ma mère",
+    stream: "https://pulse.topstrime.online/movie/1361622/o4rzet/master.m3u8"
+  },
+   {
+    id: "tt15049366",
+    type: "movie",
+    name: "Les Bodin's en Thaïlande",
+    stream: "https://pulse.topstrime.online/movie/874294/5av1y5/master.m3u8"
+  },
+   {
+    id: "tt30973842",
+    type: "movie",
+    name: "Le Jardinier",
+    stream: "https://pulse.topstrime.online/movie/1255788/f5y2q0/master.m3u8"
+  },
+   {
+    id: "tt35934350",
+    type: "movie",
+    name: "F*ckin' Fred: Comme un Léopard",
+    stream: "https://dl33.topstrime.online/hls2/12/01297/,l7aljsbdzw2i_x,lang/fre/l7aljsbdzw2i_fre,.urlset/master.m3u8?t=5OD4YZIRQlTeb1gFhUxF-Zdn596B8HVmYQxe07gL1ZA&s=1757084837&e=43200&f=6485683&i=0.0&sp=0&fr=l7aljsbdzw2i"
+  },
+   {
+    id: "tt27821575",
+    type: "movie",
+    name: "Jamais sans mon psy",
+    stream: "https://pulse.topstrime.online/movie/1130402/zuwa5l/master.m3u8"
+  },
+   {
+    id: "tt32373672",
+    type: "movie",
+    name: "L'Heureuse élue",
+    stream: "https://pulse.topstrime.online/movie/1235502/p59o5l/master.m3u8"
+  },
+   {
+    id: "tt31565654",
+    type: "movie",
+    name: "Drôle de Lune de miel",
+    stream: "https://dl30.topstrime.online/hls2/09/00607/,glvu5fgl97dj_x,lang/ara/glvu5fgl97dj_ara,lang/eng/glvu5fgl97dj_eng,lang/fre/glvu5fgl97dj_fre,.urlset/master.m3u8?t=UrVJpKai7wZjb6ISbJRzz5qS6hbBUZ4ObpXsDNpAwGA&s=1757086120&e=43200&f=3035318&i=0.0&sp=0&fr=glvu5fgl97dj"
+  },
+   {
+    id: "tt30471155",
+    type: "movie",
+    name: "Opération Portugal 2 : La vie de château",
+    stream: "https://pulse.topstrime.online/movie/1155840/p6qhkc/master.m3u8"
+  },
+
+
+  
+  
+  
   {
     id: "tt16311594",
     type: "movie",
