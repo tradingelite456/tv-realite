@@ -1,5 +1,6 @@
 // api/router.js
 // === Ton catalogue ===
+// === Ton catalogue ===
 const catalogData = [
   {
     id: "tt20969586",
@@ -8,9 +9,34 @@ const catalogData = [
     poster: "https://fr.web.img6.acsta.net/r_1920_1080/img/72/b7/72b74175dd05a704ebed57975b0f6487.jpg",
     description: "Sonny Hayes était le prodige de la F1 des années 90...",
     stream: "https://pulse.topstrime.online/movie/911430/xjycgu/master.m3u8"
+  },
+  {
+    id: "tt13443470",
+    type: "series",
+    name: "Mercredi",
+    poster: "https://m.media-amazon.com/images/M/MV5BMjE1OTdmZGEtZGU0ZS00MjEzLTk0MjktYWRhMTNjOGE0NzU5XkEyXkFqcGc@._V1_.jpg",
+    description: "Série Netflix suivant les aventures de Mercredi Addams à l’Académie Nevermore.",
+    // Pour les séries, tu dois indiquer les épisodes sous forme de 'videos'
+    videos: [
+      {
+        id: "tt13443470:1:1",  // format conventionnel : serieId:saison:episode
+        title: "Saison 1 Épisode 1",
+        season: 1,
+        episode: 1,
+        stream: "https://pulse.topstrime.online/series/mercredi/s1e1/master.m3u8"
+      },
+      {
+        id: "tt13443470:1:2",
+        title: "Saison 1 Épisode 2",
+        season: 1,
+        episode: 2,
+        stream: "https://pulse.topstrime.online/series/mercredi/s1e2/master.m3u8"
+      }
+      // ajoute les autres épisodes ici...
+    ]
   }
-  // ajoute tes films/séries ici
 ];
+
 
 // === Manifest ===
 const manifest = {
