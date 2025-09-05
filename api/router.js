@@ -55,7 +55,7 @@ const catalogData = [
         title: "Épisode 1",
         season: 1,
         episode: 1,
-        stream: "https://pulse.topstrime.online/series/mercredi/s1e1/master.m3u8"
+        stream: "https://pulse.topstrime.online/tv/119051/rdxfvx/S1/E1/master.m3u8"
       },
       {
         id: "s1e2",
