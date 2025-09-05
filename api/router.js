@@ -17,7 +17,6 @@ function stripJson(s) {
 
 // === Fonction pour récupérer le poster automatiquement depuis IMDb ===
 function fetchPosterFromIMDb(id) {
-  // URL publique compatible Stremio
   return `https://images.metahub.space/poster/small/${id}/img`;
 }
 
@@ -29,21 +28,18 @@ const catalogData = [
     name: "Thunderbolt",
     stream: "https://pulse.topstrime.online/movie/986056/82nb0j/master.m3u8"
   },
-
-{
+  {
     id: "tt16311594",
     type: "movie",
     name: "F1 (Le Film)",
     stream: "https://pulse.topstrime.online/movie/911430/1o9d0a/master.m3u8"
   },
-
-{
+  {
     id: "tt33613785",
     name: "God Save the Tuche",
     type: "movie",
     stream: "https://pulse.topstrime.online/movie/1137759/croued/master.m3u8"
   },
-  
   {
     id: "tt13443470",
     type: "series",
@@ -130,24 +126,35 @@ export default function handler(req, res) {
   // Meta
   if (resource === "meta") {
     const cleanId = stripJson(id);
-    console.log(`Serving meta for id: ${cleanId}`);
-    const item = catalogData.find(x => x.id === cleanId);
+    let item = catalogData.find(x => x.id === cleanId);
+
+    // Si pas trouvé et type series, chercher épisode
+    if (!item && type === "series") {
+      for (const series of catalogData.filter(x => x.type === "series")) {
+        const episode = series.videos?.find(v => v.id === cleanId);
+        if (episode) {
+          item = { ...episode, name: series.name };
+          break;
+        }
+      }
+    }
+
     if (!item) {
       console.log(`Meta not found for id: ${cleanId}`);
       return sendJSON(res, { err: "Not found" }, 404);
     }
+
     return sendJSON(res, { meta: item });
   }
 
   // Stream
   if (resource === "stream") {
     const cleanId = stripJson(id);
-    console.log(`Serving stream for type: ${type}, id: ${cleanId}`);
+    let item = null;
 
-    let item = catalogData.find(x => x.id === cleanId && x.type === type);
-
-    // Pour les séries, on récupère l'épisode correspondant
-    if (!item && type === "series") {
+    if (type === "movie") {
+      item = catalogData.find(x => x.id === cleanId && x.type === "movie");
+    } else if (type === "series") {
       for (const series of catalogData.filter(x => x.type === "series")) {
         const episode = series.videos?.find(v => v.id === cleanId);
         if (episode) {
