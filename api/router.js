@@ -24,7 +24,7 @@ function fetchPosterFromIMDb(id) {
 // === Ton catalogue dynamique ===
 const catalogData = [
   {
-    id: "986056",
+    id: "tmdb_986056",
     type: "movie",
     name: "Thunderbolt",
     poster: fetchPosterFromIMDb("tt20969586"),
@@ -65,11 +65,11 @@ const manifest = {
     { type: "movie", id: "directhls_movies", name: "Direct HLS Movies" },
     { type: "series", id: "directhls_series", name: "Direct HLS Series" }
   ],
-  resources: [
-    { name: "catalog", types: ["movie", "series"], idPrefixes: ["tt", "series_"] },
-    { name: "meta", types: ["movie", "series"], idPrefixes: ["tt", "series_"] },
-    { name: "stream", types: ["movie", "series"], idPrefixes: ["tt", "series_"] }
-  ],
+ resources: [
+  { name: "catalog", types: ["movie", "series"], idPrefixes: ["tt", "series_", "tmdb_"] },
+  { name: "meta", types: ["movie", "series"], idPrefixes: ["tt", "series_", "tmdb_"] },
+  { name: "stream", types: ["movie", "series"], idPrefixes: ["tt", "series_", "tmdb_"] }
+],
   types: ["movie", "series"],
   name: "Direct HLS Addon",
   description: "Streaming direct via HLS"
@@ -115,60 +115,68 @@ export default function handler(req, res) {
   }
 
   // Meta
-  if (resource === "meta") {
-    const cleanId = stripJson(id);
-    console.log(`Serving meta for id: ${cleanId}`);
-    const item = catalogData.find(x => x.id === cleanId);
-    if (!item) {
-      console.log(`Meta not found for id: ${cleanId}`);
-      return sendJSON(res, { err: "Not found" }, 404);
-    }
-    return sendJSON(res, { meta: item });
+if (resource === "meta") {
+  let cleanId = stripJson(id);
+
+  // Si l'ID commence par "tmdb_", on retire le préfixe
+  if (cleanId.startsWith("tmdb_")) {
+    cleanId = cleanId.replace(/^tmdb_/, "");
   }
 
-  // Stream
-  if (resource === "stream") {
-    const cleanId = stripJson(id);
-    console.log(`Serving stream for type: ${type}, id: ${cleanId}`);
+  console.log(`Serving meta for id: ${cleanId}`);
+  const item = catalogData.find(x => x.id === cleanId);
+  if (!item) {
+    console.log(`Meta not found for id: ${cleanId}`);
+    return sendJSON(res, { err: "Not found" }, 404);
+  }
+  return sendJSON(res, { meta: item });
+}
 
-    let item = catalogData.find(x => x.id === cleanId && x.type === type);
+// Stream
+if (resource === "stream") {
+  let cleanId = stripJson(id);
 
-    // Pour les séries, on récupère l'épisode correspondant
-    if (!item && type === "series") {
-      for (const series of catalogData.filter(x => x.type === "series")) {
-        const episode = series.videos?.find(v => v.id === cleanId);
-        if (episode) {
-          item = { ...episode, name: series.name };
-          break;
-        }
+  // Strip du préfixe TMDb si nécessaire
+  if (cleanId.startsWith("tmdb_")) {
+    cleanId = cleanId.replace(/^tmdb_/, "");
+  }
+
+  console.log(`Serving stream for type: ${type}, id: ${cleanId}`);
+
+  let item = catalogData.find(x => x.id === cleanId && x.type === type);
+
+  // Pour les séries, on récupère l'épisode correspondant
+  if (!item && type === "series") {
+    for (const series of catalogData.filter(x => x.type === "series")) {
+      const episode = series.videos?.find(v => v.id === cleanId);
+      if (episode) {
+        item = { ...episode, name: series.name };
+        break;
       }
     }
-
-    if (!item) {
-      console.log(`Stream not found for type: ${type}, id: ${cleanId}`);
-      return sendJSON(res, { streams: [] });
-    }
-
-    console.log(`Stream found: ${item.stream}`);
-
-    const streamResponse = {
-      streams: [
-        {
-          name: "Direct HLS",
-          title: `${item.name} - Direct Stream`,
-          url: item.stream,
-          quality: "HD",
-          behaviorHints: {
-            countryWhitelist: ["FR", "US", "CA", "GB"],
-            notWebReady: false
-          }
-        }
-      ]
-    };
-
-    return sendJSON(res, streamResponse);
   }
 
-  console.log(`Unknown route: ${url.pathname}`);
-  return sendJSON(res, { err: "Unknown route" }, 404);
+  if (!item) {
+    console.log(`Stream not found for type: ${type}, id: ${cleanId}`);
+    return sendJSON(res, { streams: [] });
+  }
+
+  console.log(`Stream found: ${item.stream}`);
+
+  const streamResponse = {
+    streams: [
+      {
+        name: "Direct HLS",
+        title: `${item.name} - Direct Stream`,
+        url: item.stream,
+        quality: "HD",
+        behaviorHints: {
+          countryWhitelist: ["FR", "US", "CA", "GB"],
+          notWebReady: false
+        }
+      }
+    ]
+  };
+
+  return sendJSON(res, streamResponse);
 }
