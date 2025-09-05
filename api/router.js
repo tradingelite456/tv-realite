@@ -62,14 +62,105 @@ const catalogData = [
         title: "Épisode 2",
         season: 1,
         episode: 2,
-        stream: "https://pulse.topstrime.online/series/mercredi/s1e2/master.m3u8"
+        stream: "https://pulse.topstrime.online/tv/119051/rblyo2/S1/E2/master.m3u8"
       },
       {
         id: "s1e3",
         title: "Épisode 3",
         season: 1,
         episode: 3,
-        stream: "https://pulse.topstrime.online/series/mercredi/s1e3/master.m3u8"
+        stream: "https://pulse.topstrime.online/tv/119051/v3vqw4/S1/E3/master.m3u8"
+      },
+        {
+        id: "s1e4",
+        title: "Épisode 4",
+        season: 1,
+        episode: 4,
+        stream: "https://pulse.topstrime.online/tv/119051/y080h1/S1/E4/master.m3u8"
+      },
+      {
+        id: "s1e5",
+        title: "Épisode 5",
+        season: 1,
+        episode: 5,
+        stream: "https://pulse.topstrime.online/tv/119051/feqros/S1/E5/master.m3u8"
+      },
+      {
+        id: "s1e6",
+        title: "Épisode 6",
+        season: 1,
+        episode: 6,
+        stream: "https://pulse.topstrime.online/tv/119051/4f0xlr/S1/E6/master.m3u8"
+      },
+       {
+        id: "s1e7",
+        title: "Épisode 7",
+        season: 1,
+        episode: 7,
+        stream: "https://pulse.topstrime.online/tv/119051/lt5pvl/S1/E7/master.m3u8"
+      },
+      {
+        id: "s1e8",
+        title: "Épisode 8",
+        season: 1,
+        episode: 8,
+        stream: "https://pulse.topstrime.online/tv/119051/cya5bi/S1/E8/master.m3u8"
+      },
+        {
+        id: "s2e1",
+        title: "Épisode 1",
+        season: 2,
+        episode: 1,
+        stream: "https://pulse.topstrime.online/tv/119051/zfm5xe/S2/E1/master.m3u8"
+      },
+      {
+        id: "s2e2",
+        title: "Épisode 2",
+        season: 2,
+        episode: 2,
+        stream: "https://pulse.topstrime.online/tv/119051/musbbc/S2/E2/master.m3u8"
+      },
+      {
+        id: "s2e3",
+        title: "Épisode 3",
+        season: 2,
+        episode: 3,
+        stream: "https://pulse.topstrime.online/tv/119051/fihpzg/S2/E3/master.m3u8"
+      },
+        {
+        id: "s2e4",
+        title: "Épisode 4",
+        season: 2,
+        episode: 4,
+        stream: "https://pulse.topstrime.online/tv/119051/zh7ine/S2/E4/master.m3u8"
+      },
+      {
+        id: "s2e5",
+        title: "Épisode 5",
+        season: 2,
+        episode: 5,
+        stream: "https://pulse.topstrime.online/tv/119051/g0bs80/S2/E5/master.m3u8"
+      },
+      {
+        id: "s2e6",
+        title: "Épisode 6",
+        season: 2,
+        episode: 6,
+        stream: "https://pulse.topstrime.online/tv/119051/d6g8kc/S2/E6/master.m3u8"
+      },
+       {
+        id: "s2e7",
+        title: "Épisode 7",
+        season: 2,
+        episode: 7,
+        stream: "https://pulse.topstrime.online/tv/119051/p7tzot/S2/E7/master.m3u8"
+      },
+      {
+        id: "s2e8",
+        title: "Épisode 8",
+        season: 2,
+        episode: 8,
+        stream: "https://pulse.topstrime.online/tv/119051/m15l7h/S2/E8/master.m3u8"
       }
     ]
   }
