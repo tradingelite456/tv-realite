@@ -18,7 +18,7 @@ function stripJson(s) {
 // === Fonction pour récupérer le poster automatiquement depuis IMDb ===
 function fetchPosterFromIMDb(id) {
   // URL publique compatible Stremio
-  return `https://images.metahub.space/logo/medium/${id}/img`;
+  return `https://images.metahub.space/poster/small/${id}/img`;
 }
 
 // === Ton catalogue dynamique ===
