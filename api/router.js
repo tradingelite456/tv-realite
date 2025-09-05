@@ -125,14 +125,15 @@ export default function handler(req, res) {
         poster: item.poster,
         posterShape: "regular",
         description: item.description,
-        background: item.background || item.poster
+        background: item.background || item.poster,
+        videos: item.videos || undefined
       }));
     return sendJSON(res, { metas });
   }
 
   // Meta
   if (resource === "meta") {
-    const cleanId = stripJson(id);
+    const cleanId = decodeURIComponent(stripJson(id));
     let item = catalogData.find(x => x.id === cleanId);
 
     // Si pas trouvé et type series, chercher épisode
@@ -156,7 +157,7 @@ export default function handler(req, res) {
 
   // Stream
   if (resource === "stream") {
-    let cleanId = stripJson(id).replace(/\./g, ":"); // <-- conversion si nécessaire
+    const cleanId = decodeURIComponent(stripJson(id));
     let item = null;
 
     if (type === "movie") {
