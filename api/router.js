@@ -116,69 +116,55 @@ export default function handler(req, res) {
 
  // Meta
 if (resource === "meta") {
-  let cleanId = stripJson(id);
-
-  // Strip du préfixe TMDb si nécessaire
-  if (cleanId.startsWith("tmdb_")) {
-    cleanId = cleanId.replace(/^tmdb_/, "");
-  }
-
-  console.log(`Serving meta for id: ${cleanId}`);
-  const item = catalogData.find(x => x.id === cleanId);
-  if (!item) {
-    console.log(`Meta not found for id: ${cleanId}`);
-    return sendJSON(res, { err: "Not found" }, 404);
-  }
-  return sendJSON(res, { meta: item });
+    const cleanId = stripJson(id);
+    console.log(`Serving meta for id: ${cleanId}`);
+    const item = catalogData.find(x => x.id === cleanId);
+    if (!item) {
+        console.log(`Meta not found for id: ${cleanId}`);
+        return sendJSON(res, { err: "Not found" }, 404);
+    }
+    return sendJSON(res, { meta: item });
 }
 
 // Stream
 if (resource === "stream") {
-  let cleanId = stripJson(id);
-
-  // Strip du préfixe TMDb si nécessaire
-  if (cleanId.startsWith("tmdb_")) {
-    cleanId = cleanId.replace(/^tmdb_/, "");
-  }
-
-  console.log(`Serving stream for type: ${type}, id: ${cleanId}`);
-
-  let item = catalogData.find(x => x.id === cleanId && x.type === type);
-
-  // Pour les séries, on récupère l'épisode correspondant
-  if (!item && type === "series") {
-    for (const series of catalogData.filter(x => x.type === "series")) {
-      const episode = series.videos?.find(v => v.id === cleanId);
-      if (episode) {
-        item = { ...episode, name: series.name };
-        break;
-      }
-    }
-  }
-
-  if (!item) {
-    console.log(`Stream not found for type: ${type}, id: ${cleanId}`);
-    return sendJSON(res, { streams: [] });
-  }
-
-  console.log(`Stream found: ${item.stream}`);
-
-  const streamResponse = {
-    streams: [
-      {
-        name: "Direct HLS",
-        title: `${item.name} - Direct Stream`,
-        url: item.stream,
-        quality: "HD",
-        behaviorHints: {
-          countryWhitelist: ["FR", "US", "CA", "GB"],
-          notWebReady: false
+    const cleanId = stripJson(id);
+    console.log(`Serving stream for type: ${type}, id: ${cleanId}`);
+    let item = catalogData.find(x => x.id === cleanId && x.type === type);
+    
+    // Pour les séries, on récupère l'épisode correspondant
+    if (!item && type === "series") {
+        for (const series of catalogData.filter(x => x.type === "series")) {
+            const episode = series.videos?.find(v => v.id === cleanId);
+            if (episode) {
+                item = { ...episode, name: series.name };
+                break;
+            }
         }
-      }
-    ]
-  };
-
-  return sendJSON(res, streamResponse);
+    }
+    
+    if (!item) {
+        console.log(`Stream not found for type: ${type}, id: ${cleanId}`);
+        return sendJSON(res, { streams: [] });
+    }
+    
+    console.log(`Stream found: ${item.stream}`);
+    const streamResponse = {
+        streams: [
+            {
+                name: "Direct HLS",
+                title: `${item.name} - Direct Stream`,
+                url: item.stream,
+                quality: "HD",
+                behaviorHints: {
+                    countryWhitelist: ["FR", "US", "CA", "GB"],
+                    notWebReady: false
+                }
+            }
+        ]
+    };
+    
+    return sendJSON(res, streamResponse);
 }
 
 console.log(`Unknown route: ${url.pathname}`);
