@@ -27,9 +27,7 @@ const catalogData = [
     id: "tt20969586",
     type: "movie",
     name: "Thunderbolt",
-    poster: fetchPosterFromIMDb("tt20969586"),
-    description: "Sonny Hayes était le prodige de la F1 des années 90...",
-    stream: "https://pulse.topstrime.online/movie/911430/xjycgu/master.m3u8"
+    stream: "https://pulse.topstrime.online/movie/986056/82nb0j/master.m3u8"
   },
 
 {
