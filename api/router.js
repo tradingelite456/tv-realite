@@ -31,6 +31,14 @@ const catalogData = [
     description: "Sonny Hayes était le prodige de la F1 des années 90...",
     stream: "https://pulse.topstrime.online/movie/911430/xjycgu/master.m3u8"
   },
+
+{
+    id: "tt16311594",
+    type: "movie",
+    name: "F1 (Le Film)",
+    stream: "https://pulse.topstrime.online/movie/911430/1o9d0a/master.m3u8"
+  },
+  
   {
     id: "tt13443470",
     type: "series",
