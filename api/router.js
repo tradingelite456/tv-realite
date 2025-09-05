@@ -1,12 +1,33 @@
 // api/router.js
-// === Ton catalogue ===
-// === Ton catalogue ===
+
+// === Helpers ===
+function sendJSON(res, obj, status = 200) {
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Cache-Control", "public, max-age=3600");
+  res.statusCode = status;
+  res.end(JSON.stringify(obj));
+}
+
+function stripJson(s) {
+  return s.replace(/\.json$/, "");
+}
+
+// === Fonction pour récupérer le poster automatiquement depuis IMDb ===
+function fetchPosterFromIMDb(id) {
+  // URL publique compatible Stremio
+  return `https://images.metahub.space/logo/medium/${id}/img`;
+}
+
+// === Ton catalogue dynamique ===
 const catalogData = [
   {
     id: "tt20969586",
     type: "movie",
     name: "Thunderbolt",
-    poster: "https://fr.web.img6.acsta.net/r_1920_1080/img/72/b7/72b74175dd05a704ebed57975b0f6487.jpg",
+    poster: fetchPosterFromIMDb("tt20969586"),
     description: "Sonny Hayes était le prodige de la F1 des années 90...",
     stream: "https://pulse.topstrime.online/movie/911430/xjycgu/master.m3u8"
   },
@@ -14,12 +35,11 @@ const catalogData = [
     id: "tt13443470",
     type: "series",
     name: "Mercredi",
-    poster: "https://m.media-amazon.com/images/M/MV5BMjE1OTdmZGEtZGU0ZS00MjEzLTk0MjktYWRhMTNjOGE0NzU5XkEyXkFqcGc@._V1_.jpg",
+    poster: fetchPosterFromIMDb("tt13443470"),
     description: "Série Netflix suivant les aventures de Mercredi Addams à l’Académie Nevermore.",
-    // Pour les séries, tu dois indiquer les épisodes sous forme de 'videos'
     videos: [
       {
-        id: "tt13443470:1:1",  // format conventionnel : serieId:saison:episode
+        id: "tt13443470:1:1",
         title: "Saison 1 Épisode 1",
         season: 1,
         episode: 1,
@@ -36,7 +56,6 @@ const catalogData = [
     ]
   }
 ];
-
 
 // === Manifest ===
 const manifest = {
@@ -56,44 +75,28 @@ const manifest = {
   description: "Streaming direct via HLS"
 };
 
-// === Helpers ===
-function sendJSON(res, obj, status = 200) {
-  res.setHeader("Content-Type", "application/json");
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader("Cache-Control", "public, max-age=3600");
-  res.statusCode = status;
-  res.end(JSON.stringify(obj));
-}
-
-function stripJson(s) {
-  return s.replace(/\.json$/, "");
-}
-
 // === Export Vercel Handler ===
 export default function handler(req, res) {
-  // Gestion des requêtes OPTIONS pour CORS
   if (req.method === 'OPTIONS') {
     return sendJSON(res, {}, 200);
   }
 
   const url = new URL(req.url, "http://localhost");
   const parts = url.pathname.split("/").filter(Boolean);
-  
+
   console.log("URL demandée:", url.pathname);
   console.log("Parts:", parts);
-  
+
   if (!parts.length) return sendJSON(res, { err: "No route" }, 404);
-  
+
   const [resource, type, id] = parts;
-  
+
   // Manifest
   if (url.pathname === "/manifest.json" || url.pathname === "/manifest") {
     console.log("Serving manifest");
     return sendJSON(res, manifest);
   }
-  
+
   // Catalog
   if (resource === "catalog") {
     console.log(`Serving catalog for type: ${type}`);
@@ -104,12 +107,13 @@ export default function handler(req, res) {
         type: item.type,
         name: item.name,
         poster: item.poster,
+        posterShape: "regular",
         description: item.description,
         background: item.background || item.poster
       }));
     return sendJSON(res, { metas });
   }
-  
+
   // Meta
   if (resource === "meta") {
     const cleanId = stripJson(id);
@@ -121,22 +125,32 @@ export default function handler(req, res) {
     }
     return sendJSON(res, { meta: item });
   }
-  
-  // Stream - C'est ici le point critique !
+
+  // Stream
   if (resource === "stream") {
     const cleanId = stripJson(id);
     console.log(`Serving stream for type: ${type}, id: ${cleanId}`);
-    
-    const item = catalogData.find(x => x.id === cleanId && x.type === type);
-    
+
+    let item = catalogData.find(x => x.id === cleanId && x.type === type);
+
+    // Pour les séries, on récupère l'épisode correspondant
+    if (!item && type === "series") {
+      for (const series of catalogData.filter(x => x.type === "series")) {
+        const episode = series.videos?.find(v => v.id === cleanId);
+        if (episode) {
+          item = { ...episode, name: series.name };
+          break;
+        }
+      }
+    }
+
     if (!item) {
       console.log(`Stream not found for type: ${type}, id: ${cleanId}`);
       return sendJSON(res, { streams: [] });
     }
-    
+
     console.log(`Stream found: ${item.stream}`);
-    
-    // Réponse stream avec plus d'informations
+
     const streamResponse = {
       streams: [
         {
@@ -144,7 +158,6 @@ export default function handler(req, res) {
           title: `${item.name} - Direct Stream`,
           url: item.stream,
           quality: "HD",
-          // Ajout optionnel de headers si nécessaire
           behaviorHints: {
             countryWhitelist: ["FR", "US", "CA", "GB"],
             notWebReady: false
@@ -152,10 +165,10 @@ export default function handler(req, res) {
         }
       ]
     };
-    
+
     return sendJSON(res, streamResponse);
   }
-  
+
   console.log(`Unknown route: ${url.pathname}`);
   return sendJSON(res, { err: "Unknown route" }, 404);
 }
