@@ -114,11 +114,11 @@ export default function handler(req, res) {
     return sendJSON(res, { metas });
   }
 
-  // Meta
+ // Meta
 if (resource === "meta") {
   let cleanId = stripJson(id);
 
-  // Si l'ID commence par "tmdb_", on retire le préfixe
+  // Strip du préfixe TMDb si nécessaire
   if (cleanId.startsWith("tmdb_")) {
     cleanId = cleanId.replace(/^tmdb_/, "");
   }
@@ -180,3 +180,6 @@ if (resource === "stream") {
 
   return sendJSON(res, streamResponse);
 }
+
+console.log(`Unknown route: ${url.pathname}`);
+return sendJSON(res, { err: "Unknown route" }, 404);
