@@ -41,6 +41,7 @@ const catalogData = [
 
 {
     id: "tt33613785",
+    name: "God Save the Tuche",
     type: "movie",
     stream: "https://pulse.topstrime.online/movie/1137759/croued/master.m3u8"
   },
