@@ -7,21 +7,10 @@ module.exports = (req, res) => {
     version: "1.0.0",
     name: "Direct HLS (Perso)",
     description: "Addon Stremio simple pour lire vos liens HLS/m3u8 légaux",
-    catalogs: [
-      {
-        type: "movie",
-        id: "direct_hls",
-        name: "Direct HLS Movies"
-      },
-      {
-        type: "series",
-        id: "direct_hls",
-        name: "Direct HLS Series"
-      }
-    ],
-    resources: ["catalog", "meta", "stream"],
+    catalogs: [], // aucun catalogue
+    resources: ["meta", "stream"], // on enlève "catalog"
     types: ["movie", "series"],
-    idPrefixes: ["tt", "directhls_", "series_"] // Ajout de "tt" pour IMDB IDs
+    idPrefixes: ["tt", "directhls_", "series_"]
   };
   res.end(JSON.stringify(manifest));
 };
