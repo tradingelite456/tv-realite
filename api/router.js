@@ -148,43 +148,39 @@ export default function handler(req, res) {
   }
 
   // Stream
-  if (resource === "stream") {
-    const cleanId = stripJson(id);
-    let item = null;
+if (resource === "stream") {
+  let cleanId = stripJson(id).replace(/\./g, ":"); // <-- conversion si nécessaire
+  let item = null;
 
-    if (type === "movie") {
-      item = catalogData.find(x => x.id === cleanId && x.type === "movie");
-    } else if (type === "series") {
-      for (const series of catalogData.filter(x => x.type === "series")) {
-        const episode = series.videos?.find(v => v.id === cleanId);
-        if (episode) {
-          item = { ...episode, name: series.name };
-          break;
-        }
+  if (type === "movie") {
+    item = catalogData.find(x => x.id === cleanId && x.type === "movie");
+  } else if (type === "series") {
+    for (const series of catalogData.filter(x => x.type === "series")) {
+      const episode = series.videos?.find(v => v.id === cleanId);
+      if (episode) {
+        item = { ...episode, name: series.name };
+        break;
       }
     }
+  }
 
-    if (!item) {
-      console.log(`Stream not found for type: ${type}, id: ${cleanId}`);
-      return sendJSON(res, { streams: [] });
-    }
+  if (!item) {
+    console.log(`Stream not found for type: ${type}, id: ${cleanId}`);
+    return sendJSON(res, { streams: [] });
+  }
 
-    console.log(`Stream found: ${item.stream}`);
-
-    const streamResponse = {
-      streams: [
-        {
-          name: "Direct HLS",
-          title: `${item.name} - Direct Stream`,
-          url: item.stream,
-          quality: "HD",
-          behaviorHints: {
-            countryWhitelist: ["FR", "US", "CA", "GB"],
-            notWebReady: false
-          }
-        }
-      ]
-    };
+  return sendJSON(res, {
+    streams: [
+      {
+        name: "Direct HLS",
+        title: `${item.name} - Direct Stream`,
+        url: item.stream,
+        quality: "HD",
+        behaviorHints: { countryWhitelist: ["FR", "US", "CA", "GB"], notWebReady: false }
+      }
+    ]
+  });
+}
 
     return sendJSON(res, streamResponse);
   }
