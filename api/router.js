@@ -86,6 +86,12 @@ const manifest = {
 
 // === Export Vercel Handler ===
 export default function handler(req, res) {
+  // === CORS pour toutes les routes ===
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+
+  // Réponse aux requêtes OPTIONS (préflight)
   if (req.method === 'OPTIONS') {
     return sendJSON(res, {}, 200);
   }
