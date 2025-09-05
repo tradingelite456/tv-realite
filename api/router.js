@@ -5,9 +5,6 @@ const catalogData = [
   {
     id: "tt20969586",
     type: "movie",
-    name: "F1 (Le Film)",
-    poster: "https://fr.web.img3.acsta.net/r_1920_1080/img/b1/78/b178318cb7be01b706863ca6c40a5d89.jpg",
-    description: "Sonny Hayes était le prodige de la F1 des années 90...",
     stream: "https://pulse.topstrime.online/movie/911430/xjycgu/master.m3u8"
   }
   // ajoute tes films/séries ici
