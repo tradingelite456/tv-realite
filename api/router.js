@@ -1,5 +1,4 @@
 // api/router.js
-
 // === Ton catalogue ===
 const catalogData = [
   {
@@ -35,6 +34,8 @@ const manifest = {
 function sendJSON(res, obj, status = 200) {
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Cache-Control", "public, max-age=3600");
   res.statusCode = status;
   res.end(JSON.stringify(obj));
@@ -46,20 +47,30 @@ function stripJson(s) {
 
 // === Export Vercel Handler ===
 export default function handler(req, res) {
-  const url = new URL(req.url, "http://localhost");
-  const parts = url.pathname.split("/").filter(Boolean);
-
-  if (!parts.length) return sendJSON(res, { err: "No route" }, 404);
-
-  const [resource, type, id] = parts;
-
-  // Manifest
-  if (url.pathname === "/manifest.json" || url.pathname === "/manifest") {
-    return sendJSON(res, manifest);
+  // Gestion des requêtes OPTIONS pour CORS
+  if (req.method === 'OPTIONS') {
+    return sendJSON(res, {}, 200);
   }
 
+  const url = new URL(req.url, "http://localhost");
+  const parts = url.pathname.split("/").filter(Boolean);
+  
+  console.log("URL demandée:", url.pathname);
+  console.log("Parts:", parts);
+  
+  if (!parts.length) return sendJSON(res, { err: "No route" }, 404);
+  
+  const [resource, type, id] = parts;
+  
+  // Manifest
+  if (url.pathname === "/manifest.json" || url.pathname === "/manifest") {
+    console.log("Serving manifest");
+    return sendJSON(res, manifest);
+  }
+  
   // Catalog
   if (resource === "catalog") {
+    console.log(`Serving catalog for type: ${type}`);
     const metas = catalogData
       .filter(x => x.type === type)
       .map(item => ({
@@ -72,22 +83,53 @@ export default function handler(req, res) {
       }));
     return sendJSON(res, { metas });
   }
-
+  
   // Meta
   if (resource === "meta") {
-    const item = catalogData.find(x => x.id === stripJson(id));
-    if (!item) return sendJSON(res, { err: "Not found" }, 404);
+    const cleanId = stripJson(id);
+    console.log(`Serving meta for id: ${cleanId}`);
+    const item = catalogData.find(x => x.id === cleanId);
+    if (!item) {
+      console.log(`Meta not found for id: ${cleanId}`);
+      return sendJSON(res, { err: "Not found" }, 404);
+    }
     return sendJSON(res, { meta: item });
   }
-
-  // Stream
+  
+  // Stream - C'est ici le point critique !
   if (resource === "stream") {
-    const item = catalogData.find(x => x.id === stripJson(id));
-    if (!item) return sendJSON(res, { streams: [] });
-    return sendJSON(res, {
-      streams: [{ name: "Direct HLS", title: item.name, url: item.stream }]
-    });
+    const cleanId = stripJson(id);
+    console.log(`Serving stream for type: ${type}, id: ${cleanId}`);
+    
+    const item = catalogData.find(x => x.id === cleanId && x.type === type);
+    
+    if (!item) {
+      console.log(`Stream not found for type: ${type}, id: ${cleanId}`);
+      return sendJSON(res, { streams: [] });
+    }
+    
+    console.log(`Stream found: ${item.stream}`);
+    
+    // Réponse stream avec plus d'informations
+    const streamResponse = {
+      streams: [
+        {
+          name: "Direct HLS",
+          title: `${item.name} - Direct Stream`,
+          url: item.stream,
+          quality: "HD",
+          // Ajout optionnel de headers si nécessaire
+          behaviorHints: {
+            countryWhitelist: ["FR", "US", "CA", "GB"],
+            notWebReady: false
+          }
+        }
+      ]
+    };
+    
+    return sendJSON(res, streamResponse);
   }
-
+  
+  console.log(`Unknown route: ${url.pathname}`);
   return sendJSON(res, { err: "Unknown route" }, 404);
 }
