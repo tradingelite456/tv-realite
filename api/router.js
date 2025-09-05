@@ -1,81 +1,93 @@
-import express from "express";
-import cors from "cors";
+// api/router.js
 
-const app = express();
-app.use(cors());
-
-// === Mapping IMDb → Flux DirectHLS ===
-const streamMap = {
-  // Films
-  "tt33613785": "https://pulse.topstrime.online/movie/1137759/croued/master.m3u8", // Exemple film
-  "tt0111161": "https://example.com/shawshank.m3u8", // Shawshank Redemption
-
-  // Séries (par épisode)
-  "tt0944947:1:1": "https://example.com/got_s1e1.m3u8", // Game of Thrones S1E1
-  "tt0944947:1:2": "https://example.com/got_s1e2.m3u8",
-};
+// === Ton catalogue ===
+const catalogData = [
+  {
+    id: "tt20969586",
+    type: "movie",
+    name: "F1 (Le Film)",
+    poster: "https://fr.web.img3.acsta.net/r_1920_1080/img/b1/78/b178318cb7be01b706863ca6c40a5d89.jpg",
+    description: "Sonny Hayes était le prodige de la F1 des années 90...",
+    stream: "https://pulse.topstrime.online/movie/911430/xjycgu/master.m3u8"
+  }
+  // ajoute tes films/séries ici
+];
 
 // === Manifest ===
-app.get("/manifest.json", (req, res) => {
-  res.json({
-    id: "directhls_imdb",
-    version: "1.0.0",
-    name: "DirectHLS IMDb Addon",
-    description: "Addon Stremio avec métadonnées IMDb et flux DirectHLS",
-    resources: ["catalog", "meta", "stream"],
-    types: ["movie", "series"],
-    catalogs: [
-      { type: "movie", id: "directhls_movies", name: "Films DirectHLS" },
-      { type: "series", id: "directhls_series", name: "Séries DirectHLS" }
-    ]
-  });
-});
+const manifest = {
+  id: "community.directhls",
+  version: "1.0.0",
+  catalogs: [
+    { type: "movie", id: "directhls_movies", name: "Direct HLS Movies" },
+    { type: "series", id: "directhls_series", name: "Direct HLS Series" }
+  ],
+  resources: [
+    { name: "catalog", types: ["movie", "series"], idPrefixes: ["tt", "series_"] },
+    { name: "meta", types: ["movie", "series"], idPrefixes: ["tt", "series_"] },
+    { name: "stream", types: ["movie", "series"], idPrefixes: ["tt", "series_"] }
+  ],
+  types: ["movie", "series"],
+  name: "Direct HLS Addon",
+  description: "Streaming direct via HLS"
+};
 
-// === Catalogue Films ===
-app.get("/catalog/movie/:catalogId.json", (req, res) => {
-  if (req.params.catalogId !== "directhls_movies") return res.json({ metas: [] });
+// === Helpers ===
+function sendJSON(res, obj, status = 200) {
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Cache-Control", "public, max-age=3600");
+  res.statusCode = status;
+  res.end(JSON.stringify(obj));
+}
 
-  res.json({
-    metas: [
-      { id: "tt20969586", type: "movie", name: "Creed III" },
-      { id: "tt0111161", type: "movie", name: "The Shawshank Redemption" }
-    ]
-  });
-});
+function stripJson(s) {
+  return s.replace(/\.json$/, "");
+}
 
-// === Catalogue Séries ===
-app.get("/catalog/series/:catalogId.json", (req, res) => {
-  if (req.params.catalogId !== "directhls_series") return res.json({ metas: [] });
+// === Export Vercel Handler ===
+export default function handler(req, res) {
+  const url = new URL(req.url, "http://localhost");
+  const parts = url.pathname.split("/").filter(Boolean);
 
-  res.json({
-    metas: [
-      { id: "tt0944947", type: "series", name: "Game of Thrones" }
-    ]
-  });
-});
+  if (!parts.length) return sendJSON(res, { err: "No route" }, 404);
 
-// === Meta (IMDb ID → laissé vide car Stremio va fetch depuis IMDb automatiquement) ===
-app.get("/meta/:type/:id.json", (req, res) => {
-  res.json({ meta: { id: req.params.id, type: req.params.type } });
-});
+  const [resource, type, id] = parts;
 
-// === Streams (IMDb → DirectHLS) ===
-app.get("/stream/:type/:id.json", (req, res) => {
-  const { id } = req.params;
-  const streamUrl = streamMap[id];
-
-  if (streamUrl) {
-    res.json({
-      streams: [{
-        title: "DirectHLS",
-        url: streamUrl
-      }]
-    });
-  } else {
-    res.json({ streams: [] });
+  // Manifest
+  if (url.pathname === "/manifest.json" || url.pathname === "/manifest") {
+    return sendJSON(res, manifest);
   }
-});
 
-// === Start server ===
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("✅ DirectHLS IMDb Addon lancé sur port " + PORT));
+  // Catalog
+  if (resource === "catalog") {
+    const metas = catalogData
+      .filter(x => x.type === type)
+      .map(item => ({
+        id: item.id,
+        type: item.type,
+        name: item.name,
+        poster: item.poster,
+        description: item.description,
+        background: item.background || item.poster
+      }));
+    return sendJSON(res, { metas });
+  }
+
+  // Meta
+  if (resource === "meta") {
+    const item = catalogData.find(x => x.id === stripJson(id));
+    if (!item) return sendJSON(res, { err: "Not found" }, 404);
+    return sendJSON(res, { meta: item });
+  }
+
+  // Stream
+  if (resource === "stream") {
+    const item = catalogData.find(x => x.id === stripJson(id));
+    if (!item) return sendJSON(res, { streams: [] });
+    return sendJSON(res, {
+      streams: [{ name: "Direct HLS", title: item.name, url: item.stream }]
+    });
+  }
+
+  return sendJSON(res, { err: "Unknown route" }, 404);
+}
