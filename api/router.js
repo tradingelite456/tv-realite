@@ -24,7 +24,7 @@ function fetchPosterFromIMDb(id) {
 // === Ton catalogue dynamique ===
 const catalogData = [
   {
-    id: "tt20969586",
+    id: "986056",
     type: "movie",
     name: "Thunderbolt",
     poster: fetchPosterFromIMDb("tt20969586"),
