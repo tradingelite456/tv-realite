@@ -36,8 +36,8 @@ const catalogData = [
   },
   {
     id: "tt33613785",
-    name: "God Save the Tuche",
     type: "movie",
+    name: "God Save the Tuche",
     stream: "https://pulse.topstrime.online/movie/1137759/croued/master.m3u8"
   },
   {
@@ -47,21 +47,9 @@ const catalogData = [
     poster: fetchPosterFromIMDb("tt13443470"),
     description: "Série Netflix suivant les aventures de Mercredi Addams à l’Académie Nevermore.",
     videos: [
-      {
-        id: "tt13443470:1:1",
-        title: "Saison 1 Épisode 1",
-        season: 1,
-        episode: 1,
-        stream: "https://pulse.topstrime.online/series/mercredi/s1e1/master.m3u8"
-      },
-      {
-        id: "tt13443470:1:2",
-        title: "Saison 1 Épisode 2",
-        season: 1,
-        episode: 2,
-        stream: "https://pulse.topstrime.online/series/mercredi/s1e2/master.m3u8"
-      }
-      // ajoute les autres épisodes ici...
+      { id: "tt13443470:1:1", title: "Saison 1 Épisode 1", season: 1, episode: 1 },
+      { id: "tt13443470:1:2", title: "Saison 1 Épisode 2", season: 1, episode: 2 }
+      // ajoute les autres épisodes ici sans les flux
     ]
   }
 ];
@@ -100,22 +88,17 @@ export default function handler(req, res) {
   const url = new URL(req.url, "http://localhost");
   const parts = url.pathname.split("/").filter(Boolean);
 
-  console.log("URL demandée:", url.pathname);
-  console.log("Parts:", parts);
-
   if (!parts.length) return sendJSON(res, { err: "No route" }, 404);
 
   const [resource, type, id] = parts;
 
   // Manifest
   if (url.pathname === "/manifest.json" || url.pathname === "/manifest") {
-    console.log("Serving manifest");
     return sendJSON(res, manifest);
   }
 
   // Catalog
   if (resource === "catalog") {
-    console.log(`Serving catalog for type: ${type}`);
     const metas = catalogData
       .filter(x => x.type === type)
       .map(item => ({
@@ -126,7 +109,7 @@ export default function handler(req, res) {
         posterShape: "regular",
         description: item.description,
         background: item.background || item.poster,
-        videos: item.videos || undefined
+        videos: item.videos || undefined // uniquement liste épisodes
       }));
     return sendJSON(res, { metas });
   }
@@ -147,10 +130,7 @@ export default function handler(req, res) {
       }
     }
 
-    if (!item) {
-      console.log(`Meta not found for id: ${cleanId}`);
-      return sendJSON(res, { err: "Not found" }, 404);
-    }
+    if (!item) return sendJSON(res, { err: "Not found" }, 404);
 
     return sendJSON(res, { meta: item });
   }
@@ -166,25 +146,23 @@ export default function handler(req, res) {
       for (const series of catalogData.filter(x => x.type === "series")) {
         const episode = series.videos?.find(v => v.id === cleanId);
         if (episode) {
-          item = { ...episode, name: series.name };
+          // Ici on assigne le flux correspondant à l’épisode
+          item = { ...episode, stream: `https://pulse.topstrime.online/series/mercredi/s${episode.season}e${episode.episode}/master.m3u8`, name: series.name };
           break;
         }
       }
     }
 
-    if (!item) {
-      console.log(`Stream not found for type: ${type}, id: ${cleanId}`);
-      return sendJSON(res, { streams: [] });
-    }
+    if (!item) return sendJSON(res, { streams: [] });
 
     const streamResponse = {
       streams: [
         {
           name: "Direct HLS",
-          title: `${item.name} - Direct Stream`,
+          title: `${item.name} - S${item.season}E${item.episode}`,
           url: item.stream,
           quality: "HD",
-          behaviorHints: { countryWhitelist: ["FR", "US", "CA", "GB"], notWebReady: false }
+          behaviorHints: { countryWhitelist: ["FR","US","CA","GB"], notWebReady: false }
         }
       ]
     };
@@ -192,6 +170,5 @@ export default function handler(req, res) {
     return sendJSON(res, streamResponse);
   }
 
-  console.log(`Unknown route: ${url.pathname}`);
   return sendJSON(res, { err: "Unknown route" }, 404);
 }
