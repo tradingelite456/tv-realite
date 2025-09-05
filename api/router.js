@@ -5,6 +5,9 @@ const catalogData = [
   {
     id: "tt20969586",
     type: "movie",
+    name: "Thunderbolt",
+    poster: "https://fr.web.img6.acsta.net/r_1920_1080/img/72/b7/72b74175dd05a704ebed57975b0f6487.jpg",
+    description: "Sonny Hayes était le prodige de la F1 des années 90...",
     stream: "https://pulse.topstrime.online/movie/911430/xjycgu/master.m3u8"
   }
   // ajoute tes films/séries ici
