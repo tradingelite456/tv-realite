@@ -38,6 +38,12 @@ const catalogData = [
     name: "F1 (Le Film)",
     stream: "https://pulse.topstrime.online/movie/911430/1o9d0a/master.m3u8"
   },
+
+{
+    id: "tt33613785",
+    type: "movie",
+    stream: "https://pulse.topstrime.online/movie/1137759/croued/master.m3u8"
+  },
   
   {
     id: "tt13443470",
