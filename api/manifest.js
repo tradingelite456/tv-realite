@@ -2,7 +2,6 @@ module.exports = (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.statusCode = 200;
-
   const manifest = {
     id: "org.directhls",
     version: "1.0.0",
@@ -22,8 +21,7 @@ module.exports = (req, res) => {
     ],
     resources: ["catalog", "meta", "stream"],
     types: ["movie", "series"],
-    idPrefixes: ["directhls_", "series_"] // important pour reconnaître tes séries
+    idPrefixes: ["tt", "directhls_", "series_"] // Ajout de "tt" pour IMDB IDs
   };
-
   res.end(JSON.stringify(manifest));
 };
