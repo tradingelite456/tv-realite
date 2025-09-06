@@ -98,6 +98,13 @@ const catalogData = [
     name: "Escapade en Famille",
     stream: "https://pulse.topstrime.online/movie/1029575/master.m3u8"
   },
+
+  {
+    id: "tt3402138",
+    type: "movie",
+    name: "Y a-t-il un flic pour sauver le monde ?",
+    stream: "https://pulse.topstrime.online/movie/1035259/bf8xpe/master.m3u8"
+  },
   
   {
     id: "tt16311594",
