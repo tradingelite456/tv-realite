@@ -241,6 +241,26 @@ const catalogData = [
         stream: "https://pulse.topstrime.online/tv/119051/m15l7h/S2/E8/master.m3u8"
       }
     ]
+  },
+
+
+    {
+    id: "tt5675334",
+    type: "series",
+    name: "La Villa des coeurs brisés",
+    poster: fetchPosterFromIMDb("tt13443470"),
+    description: "Ils sont plébiscités par le public pour avoir vécu des histoires d'amour qui se sont mal terminées... Nous allons les aider à reprendre confiance en eux et leur donner toutes les clés pour séduire, afin qu'ils puissent, enfin, trouver le GRAND AMOUR !",
+    genres: ["Comedy", "Fantasy"],
+    videos: [
+      {
+        id: "s10e22",
+        title: "Épisode 22",
+        season: 10,
+        episode: 22,
+        stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+      }
+     
+    ]
   }
 ];
 
