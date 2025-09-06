@@ -79,8 +79,25 @@ const catalogData = [
   },
 
 
-  
-  
+   {
+    id: "tt14550172",
+    type: "movie",
+    name: "Le médecin imaginaire",
+    stream: "https://pulse.topstrime.online/movie/764393/xm0b8c/master.m3u8"
+  },
+
+  {
+    id: "tt29031223",
+    type: "movie",
+    name: "Prosper",
+    stream: "https://pulse.topstrime.online/movie/1000881/33945z/master.m3u8"
+  },
+   {
+    id: "tt16431870",
+    type: "movie",
+    name: "Escapade en Famille",
+    stream: "https://pulse.topstrime.online/movie/1029575/master.m3u8"
+  },
   
   {
     id: "tt16311594",
