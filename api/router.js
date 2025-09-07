@@ -142,8 +142,8 @@ const catalogData = [
           episode: 11,
           overview: "Épisode 11 de la saison 10",
           released: "2025-08-22T00:00:00.000Z",
-          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
-          stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+          thumbnail: "https://photos.tf1.fr/1200/720/la-villa-des-coeurs-brises-saison-10-episode-11-du-22-aout-2025-07016282-1755847088-3dd892-aefad7-0@1x.webp",
+          stream: "https://neon-pony-05b704.netlify.app/S10E11.m3u8"
         },
 
          {
@@ -153,8 +153,8 @@ const catalogData = [
           episode: 12,
           overview: "Épisode 12 de la saison 10",
           released: "2025-08-25T00:00:00.000Z",
-          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
-          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+          thumbnail: "https://photos.tf1.fr/1200/720/la-villa-des-coeurs-brises-saison-10-episode-12-du-25-aout-2025-79395394-1756192375-8bad02-591a5d-0@1x.jpg",
+          stream: "https://lucky-cassata-616d0c.netlify.app/S10E12.m3u8"
         },
         {
           id: "ttseries_villa:10:13",
@@ -163,8 +163,8 @@ const catalogData = [
           episode: 13,
           overview: "Épisode 13 de la saison 10",
           released: "2025-08-26T00:00:00.000Z",
-          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
-          stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+          thumbnail: "https://photos.tf1.fr/1200/720/la-villa-des-coeurs-brises-saison-10-episode-13-du-26-aout-2025-07980971-1756188319-65a87f-048d64-0@1x.webp",
+          stream: "https://illustrious-rolypoly-4f16b8.netlify.app/S10E13.m3u8"
         },
       {
           id: "ttseries_villa:10:14",
@@ -173,8 +173,8 @@ const catalogData = [
           episode: 14,
           overview: "Épisode 14 de la saison 10",
           released: "2025-08-27T00:00:00.000Z",
-          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
-          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+          thumbnail: "https://photos.tf1.fr/548/308/la-villa-des-coeurs-brises-saison-10-episode-14-du-27-aout-2025-47599360-1756282917-a88048-ff31fb-0@3x.jpg",
+          stream: "https://magenta-trifle-c3506b.netlify.app/S10E14.m3u8"
         },
         {
           id: "ttseries_villa:10:15",
@@ -183,8 +183,8 @@ const catalogData = [
           episode: 15,
           overview: "Épisode 15 de la saison 10",
           released: "2025-08-28T00:00:00.000Z",
-          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
-          stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+          thumbnail: "https://photos.tf1.fr/1200/720/la-villa-des-coeurs-brises-saison-10-episode-15-du-28-aout-2025-64115472-1756367686-9c703c-0872da-0@1x.webp",
+          stream: "https://timely-lolly-490ca8.netlify.app/S10E15.m3u8"
         },
 
         
