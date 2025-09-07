@@ -269,6 +269,8 @@ const catalogData = [
      
     ]
   }
+     
+  
 ];
 
 // === Manifest ===
