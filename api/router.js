@@ -23,7 +23,7 @@ function fetchPosterFromIMDb(id) {
 const catalogData = [
 
     {
-    id: "directhls_villa10",
+    id: "tt5675334",
     type: "series",
     name: "La Villa des coeurs brisés",
     poster: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
@@ -33,7 +33,7 @@ const catalogData = [
     genres: ["Comedy", "Fantasy"],
     videos: [
       {
-        id: "directhls_villa10:10:22",
+        id: "s10e22",
         title: "Épisode 22",
         season: 10,
         episode: 22,
