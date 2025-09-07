@@ -59,8 +59,8 @@ const catalogData = [
           episode: 3,
           overview: "Épisode 3 de la saison 10",
           released: "2025-08-12T00:00:00.000Z",
-          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
-          stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+          thumbnail: "https://photos.tf1.fr/950/534/la-villa-des-coeurs-brises-saison-10-episode-03-du-12-aout-2025-11366497-1755070020-7c51f2-a7e98d-0@2x.jpg",
+          stream: "https://splendorous-taffy-ba0b65.netlify.app/S10E3.m3u8"
         },
 
            {
