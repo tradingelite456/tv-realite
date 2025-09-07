@@ -4,5 +4,15 @@
     { "source": "/catalog/:match*", "destination": "/api/router" },
     { "source": "/stream/:match*", "destination": "/api/router" },
     { "source": "/meta/:match*", "destination": "/api/router" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "*" }
+      ]
+    }
   ]
 }
