@@ -31,13 +31,233 @@ const catalogData = [
     // Episodes organisés par saison
     episodes: {
       10: [
+
+           {
+          id: "ttseries_villa:10:1",
+          title: "Épisode 1",
+          season: 10,
+          episode: 1,
+          overview: "Épisode 1 de la saison 10",
+          released: "2025-08-10T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
+          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+        },
+            {
+          id: "ttseries_villa:10:2",
+          title: "Épisode 2",
+          season: 10,
+          episode: 2,
+          overview: "Épisode 2 de la saison 10",
+          released: "2025-08-11T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
+          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+        },
+        {
+          id: "ttseries_villa:10:3",
+          title: "Épisode 3",
+          season: 10,
+          episode: 3,
+          overview: "Épisode 3 de la saison 10",
+          released: "2025-08-12T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
+          stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+        },
+
+           {
+          id: "ttseries_villa:10:4",
+          title: "Épisode 4",
+          season: 10,
+          episode: 4,
+          overview: "Épisode 4 de la saison 10",
+          released: "2025-08-13T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
+          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+        },
+        {
+          id: "ttseries_villa:10:5",
+          title: "Épisode 5",
+          season: 10,
+          episode: 5,
+          overview: "Épisode 5 de la saison 10",
+          released: "2025-08-14T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
+          stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+        },
+
+          {
+          id: "ttseries_villa:10:6",
+          title: "Épisode 6",
+          season: 10,
+          episode: 6,
+          overview: "Épisode 6 de la saison 10",
+          released: "2025-08-15T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
+          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+        },
+        {
+          id: "ttseries_villa:10:7",
+          title: "Épisode 7",
+          season: 10,
+          episode: 7,
+          overview: "Épisode 7 de la saison 10",
+          released: "2025-08-18T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
+          stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+        },
+            {
+          id: "ttseries_villa:10:8",
+          title: "Épisode 8",
+          season: 10,
+          episode: 8,
+          overview: "Épisode 8 de la saison 10",
+          released: "2025-08-19T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
+          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+        },
+        {
+          id: "ttseries_villa:10:9",
+          title: "Épisode 9",
+          season: 10,
+          episode: 9,
+          overview: "Épisode 9 de la saison 10",
+          released: "2025-08-20T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
+          stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+        },
+
+          {
+          id: "ttseries_villa:10:10",
+          title: "Épisode 10",
+          season: 10,
+          episode: 10,
+          overview: "Épisode 10 de la saison 10",
+          released: "2025-08-21T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
+          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+        },
+        {
+          id: "ttseries_villa:10:11",
+          title: "Épisode 11",
+          season: 10,
+          episode: 11,
+          overview: "Épisode 11 de la saison 10",
+          released: "2025-08-22T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
+          stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+        },
+
+         {
+          id: "ttseries_villa:10:12",
+          title: "Épisode 12",
+          season: 10,
+          episode: 12,
+          overview: "Épisode 12 de la saison 10",
+          released: "2025-08-25T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
+          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+        },
+        {
+          id: "ttseries_villa:10:13",
+          title: "Épisode 13",
+          season: 10,
+          episode: 13,
+          overview: "Épisode 13 de la saison 10",
+          released: "2025-08-26T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
+          stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+        },
+      {
+          id: "ttseries_villa:10:14",
+          title: "Épisode 14",
+          season: 10,
+          episode: 14,
+          overview: "Épisode 14 de la saison 10",
+          released: "2025-08-27T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
+          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+        },
+        {
+          id: "ttseries_villa:10:15",
+          title: "Épisode 15",
+          season: 10,
+          episode: 15,
+          overview: "Épisode 15 de la saison 10",
+          released: "2025-08-28T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
+          stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+        },
+
+        
+       {
+          id: "ttseries_villa:10:16",
+          title: "Épisode 16",
+          season: 10,
+          episode: 16,
+          overview: "Épisode 16 de la saison 10",
+          released: "2025-08-29T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
+          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+        },
+        {
+          id: "ttseries_villa:10:17",
+          title: "Épisode 17",
+          season: 10,
+          episode: 17,
+          overview: "Épisode 17 de la saison 10",
+          released: "2025-09-01T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
+          stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+        },
+        
+          {
+          id: "ttseries_villa:10:18",
+          title: "Épisode 18",
+          season: 10,
+          episode: 18,
+          overview: "Épisode 18 de la saison 10",
+          released: "2025-09-02T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
+          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+        },
+        {
+          id: "ttseries_villa:10:19",
+          title: "Épisode 19",
+          season: 10,
+          episode: 19,
+          overview: "Épisode 19 de la saison 10",
+          released: "2025-09-03T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
+          stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+        },
+        
+        {
+          id: "ttseries_villa:10:20",
+          title: "Épisode 20",
+          season: 10,
+          episode: 20,
+          overview: "Épisode 20 de la saison 10",
+          released: "2025-09-04T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
+          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+        },
+        {
+          id: "ttseries_villa:10:21",
+          title: "Épisode 21",
+          season: 10,
+          episode: 21,
+          overview: "Épisode 21 de la saison 10",
+          released: "2025-09-05T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
+          stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+        },
+        
         {
           id: "ttseries_villa:10:22",
           title: "Épisode 22",
           season: 10,
           episode: 22,
           overview: "Épisode 22 de la saison 10",
-          released: "2025-09-07T00:00:00.000Z",
+          released: "2025-09-08T00:00:00.000Z",
           thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
           stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
         },
@@ -47,8 +267,8 @@ const catalogData = [
           season: 10,
           episode: 23,
           overview: "Épisode 23 de la saison 10",
-          released: "2025-09-08T00:00:00.000Z",
-          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
+          released: "2025-09-09T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/1200/720/avant-premiere-la-villa-saison-10-episode-23-du-9-septembre-2025-78936117-1756712122-39e62b-3fa70b-0@1x.jpg",
           stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
         }
       ]
