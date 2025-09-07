@@ -23,10 +23,12 @@ function fetchPosterFromIMDb(id) {
 const catalogData = [
 
     {
-    id: "tt5675334",
+    id: "directhls_villa10",
     type: "series",
     name: "La Villa des coeurs brisés",
-    poster: fetchPosterFromIMDb("tt13443470"),
+    poster: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
+    background: "https://images1.persgroep.net/rcs/-zRbIHTq5GfByBRo528B0boVfxY/diocontent/260937823/_fitwidth/1400?appId=038a353bad43ac27fd436dc5419c256b&quality=0.8&format=webp",
+    logo: "https://photos.tf1.fr/220/110/logo-programme-la-villa-2025-0e5a1d-72c6f5-0@3x.png",  
     description: "Ils sont plébiscités par le public pour avoir vécu des histoires d'amour qui se sont mal terminées... Nous allons les aider à reprendre confiance en eux et leur donner toutes les clés pour séduire, afin qu'ils puissent, enfin, trouver le GRAND AMOUR !",
     genres: ["Comedy", "Fantasy"],
     videos: [
@@ -35,6 +37,7 @@ const catalogData = [
         title: "Épisode 22",
         season: 10,
         episode: 22,
+        thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
         stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
       },
       {
