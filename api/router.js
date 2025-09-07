@@ -15,10 +15,6 @@ function stripJson(s) {
   return s.replace(/\.json$/, "");
 }
 
-function fetchPosterFromIMDb(id) {
-  return `https://images.metahub.space/poster/small/${id}/img`;
-}
-
 // === Catalogue ===
 const catalogData = [
   {
@@ -29,22 +25,31 @@ const catalogData = [
     background: "https://images1.persgroep.net/rcs/-zRbIHTq5GfByBRo528B0boVfxY/diocontent/260937823/_fitwidth/1400?appId=038a353bad43ac27fd436dc5419c256b&quality=0.8&format=webp",
     logo: "https://photos.tf1.fr/220/110/logo-programme-la-villa-2025-0e5a1d-72c6f5-0@3x.png",  
     description: "Ils sont plébiscités par le public pour avoir vécu des histoires d'amour qui se sont mal terminées... Nous allons les aider à reprendre confiance en eux et leur donner toutes les clés pour séduire, afin qu'ils puissent, enfin, trouver le GRAND AMOUR !",
-    genres: ["Comedy", "Fantasy"],
-    videos: [
+    genres: ["Reality", "Drama"],
+    // Structure CORRIGÉE pour Stremio
+    seasons: [
       {
-        id: "s10e22",
-        title: "Épisode 22",
         season: 10,
-        episode: 22,
-        thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
-        stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
-      },
-      {
-        id: "s10e23",
-        title: "Épisode 23",
-        season: 10,
-        episode: 23,
-        stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+        title: "Saison 10",
+        overview: "Dixième saison de La Villa des coeurs brisés",
+        episodes: [
+          {
+            id: "series_villa:10:22",
+            title: "Épisode 22",
+            episode: 22,
+            overview: "Épisode 22 de la saison 10",
+            released: "2025-09-07",
+            thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg"
+          },
+          {
+            id: "series_villa:10:23",
+            title: "Épisode 23",
+            episode: 23,
+            overview: "Épisode 23 de la saison 10",
+            released: "2025-09-08",
+            thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg"
+          }
+        ]
       }
     ]
   }
@@ -113,8 +118,10 @@ export default function handler(req, res) {
         name: item.name,
         poster: item.poster,
         posterShape: "regular",
-        description: item.description || `${item.name} - Streaming direct`,
-        genres: item.genres || ["Drama"]
+        description: item.description,
+        genres: item.genres,
+        background: item.background,
+        logo: item.logo
       }));
     
     return sendJSON(res, { metas });
@@ -139,31 +146,15 @@ export default function handler(req, res) {
         type: item.type,
         name: item.name,
         poster: item.poster,
+        background: item.background,
+        logo: item.logo,
         description: item.description,
         genres: item.genres,
         runtime: "120 min"
       };
       return sendJSON(res, { meta });
     } else if (item.type === 'series') {
-      // Créer la structure des saisons
-      const seasons = {};
-      item.videos.forEach(video => {
-        if (!seasons[video.season]) {
-          seasons[video.season] = {
-            season: video.season,
-            title: `Saison ${video.season}`,
-            episodes: []
-          };
-        }
-        seasons[video.season].episodes.push({
-          id: `${item.id}:${video.season}:${video.episode}`,
-          title: video.title,
-          episode: video.episode,
-          released: new Date().toISOString().split('T')[0],
-          thumbnail: video.thumbnail || item.poster
-        });
-      });
-
+      // Structure CORRECTE pour les séries Stremio
       const meta = {
         id: item.id,
         type: item.type,
@@ -173,8 +164,20 @@ export default function handler(req, res) {
         logo: item.logo,
         description: item.description,
         genres: item.genres,
-        // Structure attendue par Stremio pour les séries
-        seasons: Object.values(seasons)
+        // STREMIO ATTEND CETTE STRUCTURE EXACTE :
+        seasons: item.seasons.map(season => ({
+          season: season.season,
+          title: season.title,
+          overview: season.overview,
+          episodes: season.episodes.map(episode => ({
+            id: episode.id,
+            title: episode.title,
+            episode: episode.episode,
+            overview: episode.overview,
+            released: episode.released,
+            thumbnail: episode.thumbnail
+          }))
+        }))
       };
       return sendJSON(res, { meta });
     }
@@ -187,33 +190,38 @@ export default function handler(req, res) {
     
     console.log('Stream request for:', type, id);
 
-    let streamInfo = null;
+    let streamUrl = null;
+    let title = "";
 
+    // Handle series episodes (format: series_villa:10:22)
     if (type === 'series' && id.includes(':')) {
-      const [seriesId, season, episode] = id.split(':');
+      const [seriesId, seasonNum, episodeNum] = id.split(':');
       const series = catalogData.find(x => x.id === seriesId && x.type === 'series');
       
-      if (series && series.videos) {
-        const video = series.videos.find(v => 
-          v.season === parseInt(season) && v.episode === parseInt(episode)
-        );
-        
-        if (video) {
-          streamInfo = {
-            url: video.stream,
-            title: `${series.name} - S${season}E${episode}`
-          };
+      if (series && series.seasons) {
+        const season = series.seasons.find(s => s.season === parseInt(seasonNum));
+        if (season) {
+          const episode = season.episodes.find(e => e.episode === parseInt(episodeNum));
+          if (episode) {
+            // Mapping des streams basé sur l'épisode
+            const streamMap = {
+              "series_villa:10:22": "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8",
+              "series_villa:10:23": "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+            };
+            streamUrl = streamMap[episode.id];
+            title = `${series.name} - S${seasonNum}E${episodeNum}`;
+          }
         }
       }
     }
 
-    if (streamInfo) {
+    if (streamUrl) {
       const streamResponse = {
         streams: [
           {
             name: "Direct HLS",
-            title: streamInfo.title,
-            url: streamInfo.url,
+            title: title,
+            url: streamUrl,
             behaviorHints: {
               notWebReady: false,
               bingeGroup: `directhls-${type}`
