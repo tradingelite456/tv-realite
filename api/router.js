@@ -29,7 +29,6 @@ const catalogData = [
     imdbRating: "6.5",
     year: "2025",
     
-    // STRUCTURE EXACTE POUR STREMIO
     episodes: [
       {
         id: "ttvilla2025:10:22",
@@ -90,14 +89,14 @@ export default function handler(req, res) {
 
   console.log('📨 Request:', req.method, pathname);
 
-  // Manifest
+  // Manifest - TOUJOURS à la racine
   if (pathname === '/manifest.json') {
     console.log('📋 Sending manifest');
     return sendJSON(res, manifest);
   }
 
-  // Catalog
-  if (parts[0] === 'catalog' && parts[1] === 'series' && parts[2] === 'directhls_series.json') {
+  // CATALOG - Routes exactes que Stremio demande
+  if (pathname === '/catalog/series/directhls_series.json') {
     console.log('📚 Sending catalog');
     const metas = catalogData.map(item => ({
       id: item.id,
@@ -114,9 +113,11 @@ export default function handler(req, res) {
     return sendJSON(res, { metas });
   }
 
-  // Meta
-  if (parts[0] === 'meta' && parts[1] === 'series') {
-    const id = decodeURIComponent(stripJson(parts[2]));
+  // META - Routes exactes que Stremio demande
+  if (pathname.startsWith('/meta/series/')) {
+    const idPart = pathname.split('/meta/series/')[1];
+    const id = decodeURIComponent(stripJson(idPart));
+    
     console.log('🔍 Meta request for series:', id);
 
     const item = catalogData.find(x => x.id === id);
@@ -126,7 +127,6 @@ export default function handler(req, res) {
       return sendJSON(res, { meta: {} });
     }
 
-    // STRUCTURE EXACTE QUE STREMIO ATTEND POUR LES SÉRIES
     const meta = {
       id: item.id,
       type: item.type,
@@ -138,12 +138,10 @@ export default function handler(req, res) {
       releaseInfo: item.releaseInfo,
       imdbRating: item.imdbRating,
       year: item.year,
-      
-      // CHAMPS OBLIGATOIRES POUR STREMIO
       posterShape: "regular",
       runtime: "60 min",
       
-      // INFO DES ÉPISODES (Stremio récupère ça via le endpoint stream)
+      // VIDEOS field is REQUIRED for Stremio to show episodes
       videos: item.episodes.map(ep => ({
         id: ep.id,
         title: ep.title,
@@ -158,9 +156,11 @@ export default function handler(req, res) {
     return sendJSON(res, { meta });
   }
 
-  // Stream
-  if (parts[0] === 'stream' && parts[1] === 'series') {
-    const id = decodeURIComponent(stripJson(parts[2]));
+  // STREAM - Routes exactes que Stremio demande
+  if (pathname.startsWith('/stream/series/')) {
+    const idPart = pathname.split('/stream/series/')[1];
+    const id = decodeURIComponent(stripJson(idPart));
+    
     console.log('🎬 Stream request for:', id);
 
     let streamUrl = null;
@@ -202,6 +202,24 @@ export default function handler(req, res) {
     }
   }
 
-  console.log('❌ Route not found:', pathname);
+  // Si aucune route ne correspond, retourner un empty array au lieu de 404
+  console.log('⚠️  Route not handled, returning empty:', pathname);
+  
+  // Pour catalog
+  if (pathname.includes('/catalog/')) {
+    return sendJSON(res, { metas: [] });
+  }
+  
+  // Pour meta
+  if (pathname.includes('/meta/')) {
+    return sendJSON(res, { meta: {} });
+  }
+  
+  // Pour stream
+  if (pathname.includes('/stream/')) {
+    return sendJSON(res, { streams: [] });
+  }
+
+  // Pour toute autre route
   return sendJSON(res, { error: "Route not found" }, 404);
 }
