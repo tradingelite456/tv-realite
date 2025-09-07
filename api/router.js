@@ -49,8 +49,8 @@ const catalogData = [
           episode: 2,
           overview: "Épisode 2 de la saison 10",
           released: "2025-08-11T00:00:00.000Z",
-          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
-          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+          thumbnail: "https://photos.tf1.fr/1200/720/la-villa-des-coeurs-brises-saison-10-episode-02-du-11-aout-2025-23214497-1755069707-05f308-86b4ce-0@1x.jpg",
+          stream: "https://velvety-rugelach-5ae261.netlify.app/S10E2.m3u8"
         },
         {
           id: "ttseries_villa:10:3",
