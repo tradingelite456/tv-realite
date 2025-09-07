@@ -28,34 +28,31 @@ const catalogData = [
     genres: ["Reality", "Drama"],
     releaseInfo: "2025",
     imdbRating: "6.5",
-    // Structure CORRIGÉE pour Stremio
-    seasons: [
-      {
-        season: 10,
-        title: "Saison 10",
-        overview: "Dixième saison de La Villa des coeurs brisés",
-        episodes: [
-          {
-            id: "ttseries_villa:10:22",
-            title: "Épisode 22",
-            episode: 22,
-            overview: "Épisode 22 de la saison 10",
-            released: "2025-09-07",
-            thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
-            stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
-          },
-          {
-            id: "ttseries_villa:10:23",
-            title: "Épisode 23",
-            episode: 23,
-            overview: "Épisode 23 de la saison 10",
-            released: "2025-09-08",
-            thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
-            stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
-          }
-        ]
-      }
-    ]
+    // Episodes organisés par saison
+    episodes: {
+      10: [
+        {
+          id: "ttseries_villa:10:22",
+          title: "Épisode 22",
+          season: 10,
+          episode: 22,
+          overview: "Épisode 22 de la saison 10",
+          released: "2025-09-07T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
+          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+        },
+        {
+          id: "ttseries_villa:10:23",
+          title: "Épisode 23",
+          season: 10,
+          episode: 23,
+          overview: "Épisode 23 de la saison 10",
+          released: "2025-09-08T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
+          stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+        }
+      ]
+    }
   }
 ];
 
@@ -65,16 +62,9 @@ const manifest = {
   version: "1.0.0",
   catalogs: [
     { 
-      type: "movie", 
-      id: "directhls_movies", 
-      name: "Direct HLS Movies",
-      extra: [{ name: "search", isRequired: false }]
-    },
-    { 
       type: "series", 
       id: "directhls_series", 
-      name: "Direct HLS Series",
-      extra: [{ name: "search", isRequired: false }]
+      name: "Direct HLS Series"
     }
   ],
   resources: [
@@ -82,9 +72,9 @@ const manifest = {
     "meta",
     "stream"
   ],
-  types: ["movie", "series"],
+  types: ["series"],
   name: "Direct HLS Addon",
-  description: "Streaming direct via HLS",
+  description: "Streaming direct via HLS pour télé-réalité",
   idPrefixes: ["tt"]
 };
 
@@ -100,52 +90,85 @@ export default function handler(req, res) {
     return res.end();
   }
 
-  const url = new URL(req.url, "http://localhost");
+  const url = new URL(req.url, `http://${req.headers.host}`);
   const pathname = url.pathname;
   const parts = pathname.split('/').filter(Boolean);
 
-  console.log('Request:', pathname, 'Parts:', parts);
+  console.log('=== REQUEST DEBUG ===');
+  console.log('Full URL:', req.url);
+  console.log('Pathname:', pathname);
+  console.log('Parts:', parts);
+  console.log('Method:', req.method);
 
-  // Manifest
-  if (pathname === '/manifest.json') {
+  // Route: /manifest.json
+  if (pathname === '/manifest.json' || (parts.length === 1 && parts[0] === 'manifest.json')) {
+    console.log('Serving manifest');
     return sendJSON(res, manifest);
   }
 
-  // Catalog
-  if (parts[0] === 'catalog') {
-    const catalogType = parts[1]; // movie or series
-    const metas = catalogData
-      .filter(item => item.type === catalogType)
-      .map(item => ({
-        id: item.id,
-        type: item.type,
-        name: item.name,
-        poster: item.poster,
-        posterShape: "regular",
-        description: item.description,
-        genres: item.genres,
-        background: item.background,
-        logo: item.logo
-      }));
+  // Route: /catalog/series/directhls_series.json
+  if (parts[0] === 'catalog' && parts.length >= 3) {
+    const catalogType = parts[1]; // series
+    const catalogId = stripJson(parts[2]); // directhls_series
     
-    return sendJSON(res, { metas });
+    console.log('Catalog request - Type:', catalogType, 'ID:', catalogId);
+
+    if (catalogType === 'series') {
+      const metas = catalogData
+        .filter(item => item.type === 'series')
+        .map(item => ({
+          id: item.id,
+          type: item.type,
+          name: item.name,
+          poster: item.poster,
+          posterShape: "regular",
+          description: item.description,
+          genres: item.genres,
+          background: item.background,
+          logo: item.logo,
+          releaseInfo: item.releaseInfo,
+          imdbRating: item.imdbRating
+        }));
+      
+      console.log('Sending catalog with', metas.length, 'items');
+      return sendJSON(res, { metas });
+    }
   }
 
-  // Meta - SECTION CRITIQUEMENT CORRIGÉE
-  if (parts[0] === 'meta') {
-    const type = parts[1]; // movie or series
-    const id = decodeURIComponent(stripJson(parts[2]));
+  // Route: /meta/series/ttseries_villa.json
+  if (parts[0] === 'meta' && parts.length >= 3) {
+    const type = parts[1]; // series
+    const id = decodeURIComponent(stripJson(parts[2])); // ttseries_villa
     
-    console.log('Meta request for:', type, id);
+    console.log('Meta request - Type:', type, 'ID:', id);
 
     const item = catalogData.find(x => x.id === id && x.type === type);
     
     if (!item) {
-      return sendJSON(res, { meta: {} }, 404);
+      console.log('Item not found for meta request');
+      return sendJSON(res, { meta: null }, 404);
     }
 
     if (item.type === 'series') {
-      // STRUCTURE EXACTE REQUISE PAR STREMIO POUR LES SÉRIES
+      // Construire la liste des saisons avec leurs épisodes
+      const videos = [];
+      
+      // Parcourir toutes les saisons disponibles
+      Object.keys(item.episodes).forEach(seasonNum => {
+        const seasonEpisodes = item.episodes[seasonNum];
+        seasonEpisodes.forEach(episode => {
+          videos.push({
+            id: episode.id,
+            title: episode.title,
+            season: episode.season,
+            episode: episode.episode,
+            overview: episode.overview,
+            released: episode.released,
+            thumbnail: episode.thumbnail
+          });
+        });
+      });
+
       const meta = {
         id: item.id,
         type: item.type,
@@ -157,67 +180,61 @@ export default function handler(req, res) {
         genres: item.genres,
         releaseInfo: item.releaseInfo,
         imdbRating: item.imdbRating,
-        
-        // STREMIO ATTEND CETTE STRUCTURE EXACTE :
-        seasons: item.seasons.map(season => ({
-          season: season.season,
-          title: season.title || `Saison ${season.season}`,
-          overview: season.overview,
-          // IMPORTANT: Stremio n'attend PAS les épisodes dans la réponse meta!
-          // Les épisodes sont chargés séparément via la requête stream
-        })),
-        
-        // Champs optionnels mais recommandés
         posterShape: "regular",
-        banner: item.background,
-        runtime: "60 min",
-        year: new Date().getFullYear().toString()
+        videos: videos // CRUCIAL: Stremio a besoin de cette liste d'épisodes
       };
       
-      console.log('Sending series meta:', JSON.stringify(meta, null, 2));
+      console.log('Sending series meta with', videos.length, 'episodes');
       return sendJSON(res, { meta });
     }
   }
 
-  // Stream - SECTION CORRIGÉE
-  if (parts[0] === 'stream') {
-    const type = parts[1]; // movie or series
-    const id = decodeURIComponent(stripJson(parts[2]));
+  // Route: /stream/series/ttseries_villa:10:22.json
+  if (parts[0] === 'stream' && parts.length >= 3) {
+    const type = parts[1]; // series
+    const id = decodeURIComponent(stripJson(parts[2])); // ttseries_villa:10:22
     
-    console.log('Stream request for:', type, id);
+    console.log('Stream request - Type:', type, 'ID:', id);
 
     let streams = [];
 
-    // Handle series episodes (format: ttseries_villa:10:22)
+    // Gérer les épisodes de séries (format: ttseries_villa:10:22)
     if (type === 'series' && id.includes(':')) {
-      const [seriesId, seasonNum, episodeNum] = id.split(':');
-      const series = catalogData.find(x => x.id === seriesId && x.type === 'series');
-      
-      if (series && series.seasons) {
-        for (const season of series.seasons) {
-          if (season.season === parseInt(seasonNum)) {
-            const episode = season.episodes.find(e => e.episode === parseInt(episodeNum));
-            if (episode && episode.stream) {
-              streams.push({
-                name: "Direct HLS",
-                title: `${series.name} - S${seasonNum}E${episodeNum}`,
-                url: episode.stream,
-                behaviorHints: {
-                  notWebReady: false,
-                  bingeGroup: `directhls-${seriesId}`
-                }
-              });
-              break;
-            }
+      const idParts = id.split(':');
+      if (idParts.length >= 3) {
+        const [seriesId, seasonNum, episodeNum] = idParts;
+        const series = catalogData.find(x => x.id === seriesId && x.type === 'series');
+        
+        console.log('Looking for series:', seriesId, 'season:', seasonNum, 'episode:', episodeNum);
+        
+        if (series && series.episodes && series.episodes[seasonNum]) {
+          const episode = series.episodes[seasonNum].find(e => e.episode === parseInt(episodeNum));
+          
+          if (episode && episode.stream) {
+            console.log('Found episode stream:', episode.stream);
+            streams.push({
+              name: "Direct HLS",
+              title: `${series.name} - S${seasonNum}E${episodeNum} - ${episode.title}`,
+              url: episode.stream,
+              behaviorHints: {
+                notWebReady: false,
+                bingeGroup: `directhls-${seriesId}-s${seasonNum}`
+              }
+            });
+          } else {
+            console.log('Episode not found or no stream URL');
           }
+        } else {
+          console.log('Series not found or no episodes for season');
         }
       }
     }
 
-    console.log('Sending streams:', streams.length > 0 ? streams : 'None found');
+    console.log('Sending', streams.length, 'streams');
     return sendJSON(res, { streams });
   }
 
-  // Si aucune route ne correspond
-  return sendJSON(res, { error: "Route not found" }, 404);
+  // Route non trouvée
+  console.log('Route not found:', pathname);
+  return sendJSON(res, { error: "Route not found", path: pathname }, 404);
 }
