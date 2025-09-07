@@ -18,7 +18,7 @@ function stripJson(s) {
 // === Catalogue ===
 const catalogData = [
   {
-    id: "series_villa",
+    id: "ttseries_villa",
     type: "series",
     name: "La Villa des coeurs brisés",
     poster: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
@@ -26,6 +26,8 @@ const catalogData = [
     logo: "https://photos.tf1.fr/220/110/logo-programme-la-villa-2025-0e5a1d-72c6f5-0@3x.png",  
     description: "Ils sont plébiscités par le public pour avoir vécu des histoires d'amour qui se sont mal terminées... Nous allons les aider à reprendre confiance en eux et leur donner toutes les clés pour séduire, afin qu'ils puissent, enfin, trouver le GRAND AMOUR !",
     genres: ["Reality", "Drama"],
+    releaseInfo: "2025",
+    imdbRating: "6.5",
     // Structure CORRIGÉE pour Stremio
     seasons: [
       {
@@ -34,7 +36,7 @@ const catalogData = [
         overview: "Dixième saison de La Villa des coeurs brisés",
         episodes: [
           {
-            id: "series_villa:10:22",
+            id: "ttseries_villa:10:22",
             title: "Épisode 22",
             episode: 22,
             overview: "Épisode 22 de la saison 10",
@@ -43,7 +45,7 @@ const catalogData = [
             stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
           },
           {
-            id: "series_villa:10:23",
+            id: "ttseries_villa:10:23",
             title: "Épisode 23",
             episode: 23,
             overview: "Épisode 23 de la saison 10",
@@ -129,7 +131,7 @@ export default function handler(req, res) {
     return sendJSON(res, { metas });
   }
 
-  // Meta
+  // Meta - SECTION CRITIQUEMENT CORRIGÉE
   if (parts[0] === 'meta') {
     const type = parts[1]; // movie or series
     const id = decodeURIComponent(stripJson(parts[2]));
@@ -139,10 +141,11 @@ export default function handler(req, res) {
     const item = catalogData.find(x => x.id === id && x.type === type);
     
     if (!item) {
-      return sendJSON(res, { error: "Not found" }, 404);
+      return sendJSON(res, { meta: {} }, 404);
     }
 
-    if (item.type === 'movie') {
+    if (item.type === 'series') {
+      // STRUCTURE EXACTE REQUISE PAR STREMIO POUR LES SÉRIES
       const meta = {
         id: item.id,
         type: item.type,
@@ -152,35 +155,26 @@ export default function handler(req, res) {
         logo: item.logo,
         description: item.description,
         genres: item.genres,
-        runtime: "120 min"
-      };
-      return sendJSON(res, { meta });
-    } else if (item.type === 'series') {
-      // Structure CORRECTE pour les séries Stremio
-      const meta = {
-        id: item.id,
-        type: item.type,
-        name: item.name,
-        poster: item.poster,
-        background: item.background,
-        logo: item.logo,
-        description: item.description,
-        genres: item.genres,
+        releaseInfo: item.releaseInfo,
+        imdbRating: item.imdbRating,
+        
         // STREMIO ATTEND CETTE STRUCTURE EXACTE :
         seasons: item.seasons.map(season => ({
           season: season.season,
-          title: season.title,
+          title: season.title || `Saison ${season.season}`,
           overview: season.overview,
-          episodes: season.episodes.map(episode => ({
-            id: episode.id,
-            title: episode.title,
-            episode: episode.episode,
-            overview: episode.overview,
-            released: episode.released,
-            thumbnail: episode.thumbnail
-          }))
-        }))
+          // IMPORTANT: Stremio n'attend PAS les épisodes dans la réponse meta!
+          // Les épisodes sont chargés séparément via la requête stream
+        })),
+        
+        // Champs optionnels mais recommandés
+        posterShape: "regular",
+        banner: item.background,
+        runtime: "60 min",
+        year: new Date().getFullYear().toString()
       };
+      
+      console.log('Sending series meta:', JSON.stringify(meta, null, 2));
       return sendJSON(res, { meta });
     }
   }
@@ -191,29 +185,28 @@ export default function handler(req, res) {
     const id = decodeURIComponent(stripJson(parts[2]));
     
     console.log('Stream request for:', type, id);
-    console.log('Stream request DETAILS:', {
-      type: type,
-      id: id,
-      parts: parts,
-      fullUrl: req.url
-    });
 
-    let streamUrl = null;
-    let title = "";
+    let streams = [];
 
-    // Handle series episodes (format: series_villa:10:22)
+    // Handle series episodes (format: ttseries_villa:10:22)
     if (type === 'series' && id.includes(':')) {
       const [seriesId, seasonNum, episodeNum] = id.split(':');
       const series = catalogData.find(x => x.id === seriesId && x.type === 'series');
       
       if (series && series.seasons) {
-        // Chercher dans toutes les saisons
         for (const season of series.seasons) {
           if (season.season === parseInt(seasonNum)) {
             const episode = season.episodes.find(e => e.episode === parseInt(episodeNum));
             if (episode && episode.stream) {
-              streamUrl = episode.stream;
-              title = `${series.name} - S${seasonNum}E${episodeNum}`;
+              streams.push({
+                name: "Direct HLS",
+                title: `${series.name} - S${seasonNum}E${episodeNum}`,
+                url: episode.stream,
+                behaviorHints: {
+                  notWebReady: false,
+                  bingeGroup: `directhls-${seriesId}`
+                }
+              });
               break;
             }
           }
@@ -221,27 +214,10 @@ export default function handler(req, res) {
       }
     }
 
-    if (streamUrl) {
-      console.log('Stream FOUND:', streamUrl);
-      const streamResponse = {
-        streams: [
-          {
-            name: "Direct HLS",
-            title: title,
-            url: streamUrl,
-            behaviorHints: {
-              notWebReady: false,
-              bingeGroup: `directhls-${type}`
-            }
-          }
-        ]
-      };
-      return sendJSON(res, streamResponse);
-    } else {
-      console.log('No stream found for:', type, id);
-      return sendJSON(res, { streams: [] });
-    }
+    console.log('Sending streams:', streams.length > 0 ? streams : 'None found');
+    return sendJSON(res, { streams });
   }
 
+  // Si aucune route ne correspond
   return sendJSON(res, { error: "Route not found" }, 404);
 }
