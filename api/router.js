@@ -21,8 +21,7 @@ function fetchPosterFromIMDb(id) {
 
 // === Catalogue ===
 const catalogData = [
-
-    {
+  {
     id: "series_villa",
     type: "series",
     name: "La Villa des coeurs brisés",
@@ -33,7 +32,7 @@ const catalogData = [
     genres: ["Comedy", "Fantasy"],
     videos: [
       {
-        id: "s10e23",
+        id: "s10e22",
         title: "Épisode 22",
         season: 10,
         episode: 22,
@@ -47,11 +46,8 @@ const catalogData = [
         episode: 23,
         stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
       }
-     
     ]
   }
-     
-  
 ];
 
 // === Manifest ===
@@ -149,20 +145,36 @@ export default function handler(req, res) {
       };
       return sendJSON(res, { meta });
     } else if (item.type === 'series') {
+      // Créer la structure des saisons
+      const seasons = {};
+      item.videos.forEach(video => {
+        if (!seasons[video.season]) {
+          seasons[video.season] = {
+            season: video.season,
+            title: `Saison ${video.season}`,
+            episodes: []
+          };
+        }
+        seasons[video.season].episodes.push({
+          id: `${item.id}:${video.season}:${video.episode}`,
+          title: video.title,
+          episode: video.episode,
+          released: new Date().toISOString().split('T')[0],
+          thumbnail: video.thumbnail || item.poster
+        });
+      });
+
       const meta = {
         id: item.id,
         type: item.type,
         name: item.name,
         poster: item.poster,
+        background: item.background,
+        logo: item.logo,
         description: item.description,
         genres: item.genres,
-        videos: item.videos.map(video => ({
-          id: `${item.id}:${video.season}:${video.episode}`,
-          title: video.title,
-          season: video.season,
-          episode: video.episode,
-          released: new Date().toISOString().split('T')[0]
-        }))
+        // Structure attendue par Stremio pour les séries
+        seasons: Object.values(seasons)
       };
       return sendJSON(res, { meta });
     }
@@ -175,19 +187,8 @@ export default function handler(req, res) {
     
     console.log('Stream request for:', type, id);
 
-    let streamUrl = null;
-    let title = "";
+    let streamInfo = null;
 
-    // Handle movies
-    if (type === 'movie') {
-      const movie = catalogData.find(x => x.id === id && x.type === 'movie');
-      if (movie) {
-        streamUrl = movie.stream;
-        title = movie.name;
-      }
-    }
-    
-    // Handle series episodes (format: tt13443470:1:1)
     if (type === 'series' && id.includes(':')) {
       const [seriesId, season, episode] = id.split(':');
       const series = catalogData.find(x => x.id === seriesId && x.type === 'series');
@@ -198,19 +199,21 @@ export default function handler(req, res) {
         );
         
         if (video) {
-          streamUrl = video.stream;
-          title = `${series.name} - S${season}E${episode}`;
+          streamInfo = {
+            url: video.stream,
+            title: `${series.name} - S${season}E${episode}`
+          };
         }
       }
     }
 
-    if (streamUrl) {
+    if (streamInfo) {
       const streamResponse = {
         streams: [
           {
             name: "Direct HLS",
-            title: title,
-            url: streamUrl,
+            title: streamInfo.title,
+            url: streamInfo.url,
             behaviorHints: {
               notWebReady: false,
               bingeGroup: `directhls-${type}`
