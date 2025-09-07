@@ -5,11 +5,17 @@ module.exports = (req, res) => {
   const manifest = {
     id: "org.directhls",
     version: "1.0.0",
-    name: "Direct HLS (Perso)",
-    description: "Addon Stremio simple pour lire vos liens HLS/m3u8 légaux",
-    catalogs: [], // aucun catalogue
-    resources: ["meta", "stream"], // on enlève "catalog"
-    types: ["movie", "series"],
+    name: "Télé-Réalité (Replay)",
+    description: "Addon Stremio simple pour vos replays",
+    catalogs: [
+      {
+        type: "series",
+        id: "direct_hls",
+        name: "Télé-Réalité"
+      }
+    ],
+    resources: ["catalog", "meta", "stream"],
+    types: ["series"], // uniquement séries
     idPrefixes: ["tt", "directhls_", "series_"]
   };
   res.end(JSON.stringify(manifest));
