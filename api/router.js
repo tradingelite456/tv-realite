@@ -39,7 +39,8 @@ const catalogData = [
             episode: 22,
             overview: "Épisode 22 de la saison 10",
             released: "2025-09-07",
-            thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg"
+            thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
+            stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
           },
           {
             id: "series_villa:10:23",
@@ -47,7 +48,8 @@ const catalogData = [
             episode: 23,
             overview: "Épisode 23 de la saison 10",
             released: "2025-09-08",
-            thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg"
+            thumbnail: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
+            stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
           }
         ]
       }
@@ -183,12 +185,18 @@ export default function handler(req, res) {
     }
   }
 
-  // Stream
+  // Stream - SECTION CORRIGÉE
   if (parts[0] === 'stream') {
     const type = parts[1]; // movie or series
     const id = decodeURIComponent(stripJson(parts[2]));
     
     console.log('Stream request for:', type, id);
+    console.log('Stream request DETAILS:', {
+      type: type,
+      id: id,
+      parts: parts,
+      fullUrl: req.url
+    });
 
     let streamUrl = null;
     let title = "";
@@ -199,23 +207,22 @@ export default function handler(req, res) {
       const series = catalogData.find(x => x.id === seriesId && x.type === 'series');
       
       if (series && series.seasons) {
-        const season = series.seasons.find(s => s.season === parseInt(seasonNum));
-        if (season) {
-          const episode = season.episodes.find(e => e.episode === parseInt(episodeNum));
-          if (episode) {
-            // Mapping des streams basé sur l'épisode
-            const streamMap = {
-              "series_villa:10:22": "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8",
-              "series_villa:10:23": "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
-            };
-            streamUrl = streamMap[episode.id];
-            title = `${series.name} - S${seasonNum}E${episodeNum}`;
+        // Chercher dans toutes les saisons
+        for (const season of series.seasons) {
+          if (season.season === parseInt(seasonNum)) {
+            const episode = season.episodes.find(e => e.episode === parseInt(episodeNum));
+            if (episode && episode.stream) {
+              streamUrl = episode.stream;
+              title = `${series.name} - S${seasonNum}E${episodeNum}`;
+              break;
+            }
           }
         }
       }
     }
 
     if (streamUrl) {
+      console.log('Stream FOUND:', streamUrl);
       const streamResponse = {
         streams: [
           {
