@@ -13,13 +13,13 @@ export default function handler(req, res) {
   const manifest = {
     id: "community.directhls",
     version: "1.0.0",
-    name: "Direct HLS Addon",
-    description: "Streaming direct via HLS pour télé-réalité",
+    name: "Télé-Réalité",
+    description: "Streaming direct pour télé-réalité",
     catalogs: [
       {
         type: "series",
         id: "directhls_series",
-        name: "Direct HLS Series"
+        name: "Télé-Réalité"
       }
     ],
     resources: ["catalog", "meta", "stream"],
