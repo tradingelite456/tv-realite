@@ -33,7 +33,7 @@ const catalogData = [
     genres: ["Comedy", "Fantasy"],
     videos: [
       {
-        id: "series_villa:10:22",
+        id: "s10e23",
         title: "Épisode 22",
         season: 10,
         episode: 22,
