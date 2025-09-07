@@ -70,8 +70,8 @@ const catalogData = [
           episode: 4,
           overview: "Épisode 4 de la saison 10",
           released: "2025-08-13T00:00:00.000Z",
-          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-18-du-2-septembre-2025-31586572-1756106139-48428a-e6db9f-0@3x.jpg",
-          stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+          thumbnail: "https://photos.tf1.fr/950/534/la-villa-des-coeurs-brises-saison-10-episode-04-du-13-aout-2025-60236528-1755070104-e37445-5ba6af-0@1x.jpg",
+          stream: "https://cheery-sawine-575a8f.netlify.app/S10E4.m3u8"
         },
         {
           id: "ttseries_villa:10:5",
