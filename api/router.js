@@ -258,6 +258,13 @@ const catalogData = [
         season: 10,
         episode: 22,
         stream: "https://dainty-bienenstitch-92bfd0.netlify.app/Video.m3u8"
+      },
+      {
+        id: "s10e23",
+        title: "Épisode 23",
+        season: 10,
+        episode: 23,
+        stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
       }
      
     ]
