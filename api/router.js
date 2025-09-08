@@ -270,6 +270,16 @@ const catalogData = [
           released: "2025-09-09T00:00:00.000Z",
           thumbnail: "https://photos.tf1.fr/1200/720/avant-premiere-la-villa-saison-10-episode-23-du-9-septembre-2025-78936117-1756712122-39e62b-3fa70b-0@1x.jpg",
           stream: "https://super-creponne-012bcc.netlify.app/S10E23.m3u8"
+        },
+        {
+          id: "ttseries_villa:10:24",
+          title: "Épisode 24",
+          season: 10,
+          episode: 24,
+          overview: "Épisode 24 de la saison 10",
+          released: "2025-09-10T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/la-villa-des-coeurs-brises-saison-10-episode-15-du-28-aout-2025-64115472-1756367686-9c703c-2d8387-0@3x.jpg",
+          stream: "https://chic-twilight-494a45.netlify.app/master.m3u8"
         }
       ]
     }
