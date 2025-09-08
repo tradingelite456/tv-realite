@@ -279,7 +279,7 @@ const catalogData = [
     id: "ttseries_jlc8",
     type: "series",
     name: "JLC Family Seule",
-    poster: "https://i.ibb.co/sp4FPCvJ/Design-sans-titre.jpg",
+    poster: "https://i.ibb.co/sdCRZQ1x/Design-sans-titre-5.png",
     background: "https://photos.tf1.fr/1920/1080/background-ott-jlc-family-seule-67fe2d-a97444-0@3x.jpg",
     logo: "https://photos.tf1.fr/220/110/logo-programme-jlc-family-seule-1c7d6e-bb5be1-0@3x.png",  
     description: "À l'approche de ses 33 ans, Jazz se trouve à un carrefour déterminant de sa vie personnelle. Si elle a l'habitude que sa vie soit sans cesse commentée et que son quotidien soit millimétré, actuellement ce qui la préoccupe profondément, c'est de savoir s'il reste une chance pour son couple avec Laurent ?",
