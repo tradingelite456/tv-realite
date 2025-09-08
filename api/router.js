@@ -273,7 +273,36 @@ const catalogData = [
         }
       ]
     }
+  },
+
+ {
+    id: "ttseries_jlc8",
+    type: "series",
+    name: "JLC Family Seule",
+    poster: "https://i.ibb.co/sp4FPCvJ/Design-sans-titre.jpg",
+    background: "https://photos.tf1.fr/1920/1080/background-ott-jlc-family-seule-67fe2d-a97444-0@3x.jpg",
+    logo: "https://photos.tf1.fr/220/110/logo-programme-jlc-family-seule-1c7d6e-bb5be1-0@3x.png",  
+    description: "À l'approche de ses 33 ans, Jazz se trouve à un carrefour déterminant de sa vie personnelle. Si elle a l'habitude que sa vie soit sans cesse commentée et que son quotidien soit millimétré, actuellement ce qui la préoccupe profondément, c'est de savoir s'il reste une chance pour son couple avec Laurent ?",
+    genres: ["Divertissement"],
+    releaseInfo: "2025",
+    // Episodes organisés par saison
+    episodes: {
+      8: [
+
+           {
+          id: "ttseries_jlc8:8:0",
+          title: "Teaser Saison 8",
+          season: 8,
+          episode: 0,
+          overview: "À l'approche de ses 33 ans, Jazz se trouve à un carrefour déterminant de sa vie personnelle.",
+          released: "2025-09-08T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/950/534/les-premieres-images-de-la-saison-12d9e8-c34c7e-0@3x.jpg",
+          stream: "https://effulgent-pothos-877322.netlify.app/S8E0.m3u8"
+        }
+      ]
+    }
   }
+  
 ];
 
 // === Manifest ===
