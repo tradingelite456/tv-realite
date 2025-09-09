@@ -280,6 +280,16 @@ const catalogData = [
           released: "2025-09-10T00:00:00.000Z",
           thumbnail: "https://photos.tf1.fr/330/186/la-villa-des-coeurs-brises-saison-10-episode-15-du-28-aout-2025-64115472-1756367686-9c703c-2d8387-0@3x.jpg",
           stream: "https://chic-twilight-494a45.netlify.app/master.m3u8"
+        },
+        {
+          id: "ttseries_villa:10:25",
+          title: "Épisode 25",
+          season: 10,
+          episode: 25,
+          overview: "Épisode 25 de la saison 10",
+          released: "2025-09-11T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/la-villa-des-coeurs-brises-saison-10-episode-15-du-28-aout-2025-64115472-1756367686-9c703c-2d8387-0@3x.jpg",
+          stream: "https://stately-youtiao-b39da3.netlify.app/master.m3u8"
         }
       ]
     }
