@@ -290,6 +290,16 @@ const catalogData = [
           released: "2025-09-11T00:00:00.000Z",
           thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-25-du-11-septembre-2025-62314241-1757397519-942251-12921b-0@3x.webp",
           stream: "https://stately-youtiao-b39da3.netlify.app/master.m3u8"
+        },
+        {
+          id: "ttseries_villa:10:26",
+          title: "Épisode 26",
+          season: 10,
+          episode: 26,
+          overview: "Épisode 26 de la saison 10",
+          released: "2025-09-12T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-26-du-12-septembre-2025-35469899-1757402771-a96be3-6e890b-0@3x.webp",
+          stream: "https://stirring-marshmallow-f14089.netlify.app/master.m3u8"
         }
       ]
     }
