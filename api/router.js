@@ -278,7 +278,7 @@ const catalogData = [
           episode: 24,
           overview: "Épisode 24 de la saison 10",
           released: "2025-09-10T00:00:00.000Z",
-          thumbnail: "https://photos.tf1.fr/330/186/la-villa-des-coeurs-brises-saison-10-episode-15-du-28-aout-2025-64115472-1756367686-9c703c-2d8387-0@3x.jpg",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-24-du-10-septembre-2025-04968679-1757397549-d001c6-d4b157-0@3x.jpg",
           stream: "https://chic-twilight-494a45.netlify.app/master.m3u8"
         },
         {
@@ -288,7 +288,7 @@ const catalogData = [
           episode: 25,
           overview: "Épisode 25 de la saison 10",
           released: "2025-09-11T00:00:00.000Z",
-          thumbnail: "https://photos.tf1.fr/330/186/la-villa-des-coeurs-brises-saison-10-episode-15-du-28-aout-2025-64115472-1756367686-9c703c-2d8387-0@3x.jpg",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-25-du-11-septembre-2025-62314241-1757397519-942251-c7afef-0@1x.webp",
           stream: "https://stately-youtiao-b39da3.netlify.app/master.m3u8"
         }
       ]
