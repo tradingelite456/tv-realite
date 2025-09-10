@@ -288,7 +288,7 @@ const catalogData = [
           episode: 25,
           overview: "Épisode 25 de la saison 10",
           released: "2025-09-11T00:00:00.000Z",
-          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-25-du-11-septembre-2025-62314241-1757397519-942251-c7afef-0@1x.webp",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-25-du-11-septembre-2025-62314241-1757397519-942251-12921b-0@3x.webp",
           stream: "https://stately-youtiao-b39da3.netlify.app/master.m3u8"
         }
       ]
