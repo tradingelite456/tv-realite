@@ -385,7 +385,7 @@ const catalogData = [
           season: 8,
           episode: 2,
           overview: "À l'approche de ses 33 ans, Jazz se trouve à un carrefour déterminant.",
-          released: "2025-09-016T00:00:00.000Z",
+          released: "2025-09-16T00:00:00.000Z",
           thumbnail: "https://photos.tf1.fr/330/186/2107707_jlcseule_vignettereplay_ep02-7afc7b-b4fa26-0@3x.jpg",
           stream: "https://glistening-chaja-cf55c6.netlify.app/master.m3u8"
         }
