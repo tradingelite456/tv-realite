@@ -340,6 +340,16 @@ const catalogData = [
           released: "2025-09-18T00:00:00.000Z",
           thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-30-du-18-septembre-2025-08894233-1757921658-c4fd52-037537-0@3x.webp",
           stream: "https://darling-tapioca-723401.netlify.app/master.m3u8"
+        },
+         {
+          id: "ttseries_villa:10:31",
+          title: "Épisode 31",
+          season: 10,
+          episode: 31,
+          overview: "Épisode 31 de la saison 10",
+          released: "2025-09-19T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-31-du-19-septembre-2025-37152138-1757397339-6e5b23-ac4083-0@3x.jpg",
+          stream: "https://beautiful-genie-f83a9d.netlify.app/master.m3u8"
         }
       ]
     }
