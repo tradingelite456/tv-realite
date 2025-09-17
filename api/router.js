@@ -21,7 +21,7 @@ const catalogData = [
     id: "ttseries_villa",
     type: "series",
     name: "La Villa des coeurs brisés",
-    poster: "https://photos.tf1.fr/354/531/poster-card-la-villa-2025-6909e4-db7bd0-0@3x.jpg",
+    poster: "https://photos.tf1.fr/217/289/program-card-coaching-emine-maissanne-ep21-1a6928-eb1200-0@3x.jpg",
     background: "https://images1.persgroep.net/rcs/-zRbIHTq5GfByBRo528B0boVfxY/diocontent/260937823/_fitwidth/1400?appId=038a353bad43ac27fd436dc5419c256b&quality=0.8&format=webp",
     logo: "https://photos.tf1.fr/220/110/logo-programme-la-villa-2025-0e5a1d-72c6f5-0@3x.png",  
     description: "Ils sont plébiscités par le public pour avoir vécu des histoires d'amour qui se sont mal terminées... Nous allons les aider à reprendre confiance en eux et leur donner toutes les clés pour séduire, afin qu'ils puissent, enfin, trouver le GRAND AMOUR !",
@@ -311,6 +311,26 @@ const catalogData = [
           thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-27-du-15-septembre-2025-11671735-1757397419-5e28ae-cc711a-0@3x.webp",
           stream: "https://elegant-syrniki-d416bb.netlify.app/master.m3u8"
         },
+        {
+          id: "ttseries_villa:10:28",
+          title: "Épisode 28",
+          season: 10,
+          episode: 28,
+          overview: "Épisode 28 de la saison 10",
+          released: "2025-09-16T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/la-villa-des-coeurs-brises-saison-10-episode-28-du-16-septembre-2025-81396062-1758033387-f4c788-290e4a-0@3x.webp",
+          stream: "https://stellular-nasturtium-349902.netlify.app/master.m3u8"
+        },
+        {
+          id: "ttseries_villa:10:29",
+          title: "Épisode 29",
+          season: 10,
+          episode: 29,
+          overview: "Épisode 29 de la saison 10",
+          released: "2025-09-17T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-29-du-17-septembre-2025-80793336-1757668511-0e0301-84b7f6-0@3x.webp",
+          stream: "https://curious-cupcake-aa33e2.netlify.app/master.m3u8"
+        },
          {
           id: "ttseries_villa:10:30",
           title: "Épisode 30",
@@ -329,7 +349,7 @@ const catalogData = [
     id: "ttseries_jlc8",
     type: "series",
     name: "JLC Family Seule",
-    poster: "https://i.ibb.co/sdCRZQ1x/Design-sans-titre-5.png",
+    poster: "https://photos.tf1.fr/217/289/program-card-jlc-s08-ep-2-1-46699f-c8e84a-0@3x.jpg",
     background: "https://photos.tf1.fr/1920/1080/background-ott-jlc-family-seule-67fe2d-a97444-0@3x.jpg",
     logo: "https://photos.tf1.fr/220/110/logo-programme-jlc-family-seule-1c7d6e-bb5be1-0@3x.png",  
     description: "À l'approche de ses 33 ans, Jazz se trouve à un carrefour déterminant de sa vie personnelle. Si elle a l'habitude que sa vie soit sans cesse commentée et que son quotidien soit millimétré, actuellement ce qui la préoccupe profondément, c'est de savoir s'il reste une chance pour son couple avec Laurent ?",
