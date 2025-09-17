@@ -371,20 +371,20 @@ const catalogData = [
         },
         {
           id: "ttseries_jlc8:8:1",
-          title: "Teaser Saison 8",
+          title: "Episode 1",
           season: 8,
           episode: 1,
-          overview: "À l'approche de ses 33 ans, Jazz se trouve à un carrefour déterminant de sa vie personnelle.",
+          overview: "À l'approche de ses 33 ans, Jazz se trouve à un carrefour déterminant de sa vie.",
           released: "2025-09-15T00:00:00.000Z",
           thumbnail: "https://photos.tf1.fr/330/186/2107706_jlcseule_vignettereplay_ep01-a16271-830f1c-0@3x.jpg",
           stream: "https://tubular-bunny-a4e45f.netlify.app/master.m3u8"
         },
         {
           id: "ttseries_jlc8:8:2",
-          title: "Teaser Saison 8",
+          title: "Episode 2",
           season: 8,
           episode: 2,
-          overview: "À l'approche de ses 33 ans, Jazz se trouve à un carrefour déterminant de sa vie personnelle.",
+          overview: "À l'approche de ses 33 ans, Jazz se trouve à un carrefour déterminant.",
           released: "2025-09-016T00:00:00.000Z",
           thumbnail: "https://photos.tf1.fr/330/186/2107707_jlcseule_vignettereplay_ep02-7afc7b-b4fa26-0@3x.jpg",
           stream: "https://glistening-chaja-cf55c6.netlify.app/master.m3u8"
