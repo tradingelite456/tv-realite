@@ -308,7 +308,7 @@ const catalogData = [
           episode: 27,
           overview: "Épisode 27 de la saison 10",
           released: "2025-09-13T00:00:00.000Z",
-          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-27-du-15-septembre-2025-11671735-1757397419-5e28ae-cc711a-0@3x.webp",
+          thumbnail: "https://photos.tf1.fr/330/186/la-villa-des-coeurs-brises-saison-10-episode-27-du-15-septembre-2025-87848099-1757958813-57d813-8af2ca-0@3x.jpg",
           stream: "https://elegant-syrniki-d416bb.netlify.app/master.m3u8"
         },
         {
@@ -368,6 +368,26 @@ const catalogData = [
           released: "2025-09-08T00:00:00.000Z",
           thumbnail: "https://photos.tf1.fr/950/534/les-premieres-images-de-la-saison-12d9e8-c34c7e-0@3x.jpg",
           stream: "https://effulgent-pothos-877322.netlify.app/S8E0.m3u8"
+        },
+        {
+          id: "ttseries_jlc8:8:1",
+          title: "Teaser Saison 8",
+          season: 8,
+          episode: 1,
+          overview: "À l'approche de ses 33 ans, Jazz se trouve à un carrefour déterminant de sa vie personnelle.",
+          released: "2025-09-15T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/2107706_jlcseule_vignettereplay_ep01-a16271-830f1c-0@3x.jpg",
+          stream: "https://tubular-bunny-a4e45f.netlify.app/master.m3u8"
+        },
+        {
+          id: "ttseries_jlc8:8:2",
+          title: "Teaser Saison 8",
+          season: 8,
+          episode: 2,
+          overview: "À l'approche de ses 33 ans, Jazz se trouve à un carrefour déterminant de sa vie personnelle.",
+          released: "2025-09-016T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/2107707_jlcseule_vignettereplay_ep02-7afc7b-b4fa26-0@3x.jpg",
+          stream: "https://glistening-chaja-cf55c6.netlify.app/master.m3u8"
         }
       ]
     }
