@@ -360,6 +360,16 @@ const catalogData = [
           released: "2025-09-20T00:00:00.000Z",
           thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-32-du-22-septembre-2025-40038583-1757905813-6121f6-213eb1-0@3x.jpg",
           stream: "https://monumental-dodol-df2c20.netlify.app/master.m3u8"
+        },
+         {
+          id: "ttseries_villa:10:33",
+          title: "Épisode 33",
+          season: 10,
+          episode: 33,
+          overview: "Épisode 33 de la saison 10",
+          released: "2025-09-21T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-33-du-23-septembre-2025-31902648-1757905784-d9c4f0-d1adf7-0@3x.jpg",
+          stream: "https://quiet-capybara-50244f.netlify.app/master.m3u8"
         }
       ]
     }
