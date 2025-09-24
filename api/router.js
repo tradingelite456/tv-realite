@@ -390,6 +390,16 @@ const catalogData = [
           released: "2025-09-25T00:00:00.000Z",
           thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-35-du-25-septembre-2025-90412389-1758111884-132788-26a8a2-0@3x.jpg",
           stream: "https://tangerine-sunburst-795d8d.netlify.app/master.m3u8"
+        },
+         {
+          id: "ttseries_villa:10:36",
+          title: "Épisode 36",
+          season: 10,
+          episode: 36,
+          overview: "Épisode 36 de la saison 10",
+          released: "2025-09-26T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-36-du-26-septembre-2025-79545661-1758111871-0a62a9-2f3d38-0@3x.jpg",
+          stream: "https://heartfelt-trifle-bf3b55.netlify.app/master.m3u8"
         }
       ]
     }
