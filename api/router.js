@@ -420,6 +420,16 @@ const catalogData = [
           released: "2025-09-28T00:00:00.000Z",
           thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-38-du-30-septembre-2025-20373680-1758702827-85fe2d-0092cf-0@3x.jpg",
           stream: "https://fantastic-treacle-85dcb0.netlify.app/master.m3u8"
+        },
+         {
+          id: "ttseries_villa:10:39",
+          title: "Épisode 39",
+          season: 10,
+          episode: 39,
+          overview: "Épisode 39 de la saison 10",
+          released: "2025-09-30T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-39-du-1-octobre-2025-38599584-1758807587-14c0f0-b33bbc-0@3x.jpg",
+          stream: "https://eclectic-jalebi-0548b9.netlify.app/master.m3u8"
         }
       ]
     }
