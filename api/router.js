@@ -440,6 +440,16 @@ const catalogData = [
           released: "2025-10-01T00:00:00.000Z",
           thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-40-du-2-octobre-2025-62793645-1759129357-87317b-416f94-0@3x.jpg",
           stream: "https://cool-queijadas-bd6520.netlify.app/master.m3u8"
+        },
+         {
+          id: "ttseries_villa:10:41",
+          title: "Épisode 41",
+          season: 10,
+          episode: 41,
+          overview: "Épisode 41 de la saison 10",
+          released: "2025-10-02T00:00:00.000Z",
+          thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-41-du-3-octobre-2025-28133267-1759129375-3b484e-225e60-0@3x.jpg",
+          stream: "https://polite-pasca-75f801.netlify.app/master.m3u8"
         }
       ]
     }
