@@ -459,7 +459,7 @@ const catalogData = [
           overview: "Épisode 42 de la saison 10",
           released: "2025-10-04T00:00:00.000Z",
           thumbnail: "https://photos.tf1.fr/330/186/avant-premiere-la-villa-saison-10-episode-42-du-6-octobre-2025-88848561-1759129401-646d81-3e1a7e-0@3x.jpg",
-          stream: "https://celadon-arithmetic-e60bd6.netlify.app/master.m3u8"
+          stream: "https://beautiful-centaur-2efe4f.netlify.app/master.m3u8"
         }
       ]
     }
